@@ -169,7 +169,7 @@ export class SelectionController extends Controller<'main'> {
           category = `${v}`;
           break;
         default:
-          args.set(k, `${v}`);
+          args.set(`details.${k}`, `${v}`);
       }
     }
 
@@ -237,7 +237,7 @@ export class SelectionController extends Controller<'main'> {
             'Destination Slice',
             {kind: 'SLICE', trackId: destTrackId, sliceId: Number(value)});
       } else {
-        args.set(name, value);
+        args.set(`args.${name}`, value);
       }
     }
     return args;

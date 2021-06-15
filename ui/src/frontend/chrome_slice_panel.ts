@@ -106,10 +106,23 @@ class TableBuilder {
         this.stack.pop();
       }
     } else if (isArgTreeMap(record)) {
+      if(prefix!==''){
+        // Add the current prefix as a separate row
+        const row = this.prepareRow();
+        this.rows.push({
+          indentLevel: row[0],
+          index: row[1],
+          contents: {kind: 'TableHeader', header: prefix}
+        });
+      }
       for (const [key, value] of Object.entries(record)) {
-        // If the prefix was non-empty, we have to add dot at the end as well.
-        const newPrefix = (prefix === '') ? key : prefix + '.' + key;
-        this.addTreeInternal(value, newPrefix);
+        if(prefix===''){
+          this.addTreeInternal(value, key);
+        } else {
+          this.stack.push(-1);
+          this.addTreeInternal(value, key);
+          this.stack.pop();
+        }
       }
     } else {
       // Leaf value in the tree: add to the table
