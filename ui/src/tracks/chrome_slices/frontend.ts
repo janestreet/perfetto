@@ -16,7 +16,7 @@ import {hsluvToHex} from 'hsluv';
 
 import {Actions} from '../../common/actions';
 import {cropText, drawIncompleteSlice} from '../../common/canvas_utils';
-import {hslForSlice, hslForThreadIdleSlice} from '../../common/colorizer';
+import {hslForSlice, hslForThreadIdleSlice, SEARCH_COLOR} from '../../common/colorizer';
 import {TRACE_MARGIN_TIME_S} from '../../common/constants';
 import {checkerboardExcept} from '../../frontend/checkerboard';
 import {globals} from '../../frontend/globals';
@@ -99,6 +99,8 @@ export class ChromeSliceTrack extends Track<Config, Data> {
           currentSelection.kind === 'CHROME_SLICE' &&
           currentSelection.id !== undefined && currentSelection.id === sliceId;
 
+      const inSearch = globals.currentSearchResults.sliceIdSet.has(sliceId);
+
       const name = title.replace(/( )?\d+/g, '');
       const highlighted = titleId === this.hoveredTitleId ||
           globals.state.highlightedSliceId === sliceId;
@@ -108,7 +110,9 @@ export class ChromeSliceTrack extends Track<Config, Data> {
       const [hue, saturation, lightness] = hslForSlice(name, hasFocus);
 
       let color: string;
-      if (colorOverride === undefined) {
+      if(inSearch) {
+        color = SEARCH_COLOR;
+      } else if (colorOverride === undefined) {
         color = hsluvToHex([hue, saturation, lightness]);
       } else {
         color = colorOverride;

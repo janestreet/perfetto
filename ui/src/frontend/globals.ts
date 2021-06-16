@@ -221,6 +221,7 @@ class Globals {
     sliceIds: new Float64Array(0),
     tsStarts: new Float64Array(0),
     utids: new Float64Array(0),
+    sliceIdSet: new Set(),
     trackIds: [],
     sources: [],
     totalResults: 0,
@@ -542,6 +543,7 @@ class Globals {
     this._metricResult = undefined;
     this._currentSearchResults = {
       sliceIds: new Float64Array(0),
+      sliceIdSet: new Set(),
       tsStarts: new Float64Array(0),
       utids: new Float64Array(0),
       trackIds: [],
