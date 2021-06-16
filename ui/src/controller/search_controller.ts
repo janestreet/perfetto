@@ -262,7 +262,7 @@ export class SearchController extends Controller<'main'> {
       0 as utid
       from slice
       join args using(arg_set_id)
-      where string_value like ${searchLiteral}
+      where CAST(COALESCE(int_value, string_value, real_value) AS text) like ${searchLiteral}
     order by ts`);
 
     const rows = queryRes.numRows();
