@@ -51,6 +51,9 @@ export const GRAY_COLOR: Color = {
   l: 62,
 };
 
+// Based on the CSS color for .flash but lower lightness
+export const SEARCH_COLOR: string = '#ffd000';
+
 function hash(s: string, max: number): number {
   let hash = 0x811c9dc5 & 0xfffffff;
   for (let i = 0; i < s.length; i++) {
