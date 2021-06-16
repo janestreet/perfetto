@@ -19,6 +19,7 @@ import {TRACK_SHELL_WIDTH} from './css_constants';
 import {globals} from './globals';
 import {gridlines} from './gridline_helper';
 import {Panel, PanelSize} from './panel';
+import {SEARCH_COLOR} from '../common/colorizer';
 
 // This is used to display the summary of search results.
 export class TickmarkPanel extends Panel {
@@ -46,7 +47,7 @@ export class TickmarkPanel extends Panel {
       const rectStart =
           Math.max(timeScale.timeToPx(tStart), 0) + TRACK_SHELL_WIDTH;
       const rectEnd = timeScale.timeToPx(tEnd) + TRACK_SHELL_WIDTH;
-      ctx.fillStyle = '#ffe263';
+      ctx.fillStyle = SEARCH_COLOR;
       ctx.fillRect(
           Math.floor(rectStart),
           0,
