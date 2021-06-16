@@ -26,9 +26,11 @@
 #include "src/trace_processor/importers/fuchsia/fuchsia_record.h"
 #include "src/trace_processor/importers/proto/proto_trace_parser.h"
 #include "src/trace_processor/importers/proto/proto_trace_reader.h"
+#include "src/trace_processor/importers/common/clock_tracker.h"
 #include "src/trace_processor/trace_sorter.h"
 #include "src/trace_processor/types/task_state.h"
 #include "src/trace_processor/types/trace_processor_context.h"
+#include "protos/perfetto/trace/clock_snapshot.pbzero.h"
 
 namespace perfetto {
 namespace trace_processor {
@@ -64,6 +66,9 @@ constexpr uint32_t kZxObjTypeThread = 2;
 // Argument types
 constexpr uint32_t kArgString = 6;
 constexpr uint32_t kArgKernelObject = 8;
+
+constexpr ClockTracker::ClockId kTraceClock = 0;
+constexpr ClockTracker::ClockId kRealtimeClock = protos::pbzero::ClockSnapshot::Clock::REALTIME;
 }  // namespace
 
 FuchsiaTraceTokenizer::FuchsiaTraceTokenizer(TraceProcessorContext* context)
@@ -249,6 +254,43 @@ void FuchsiaTraceTokenizer::ParseRecord(TraceBlobView tbv) {
         context_->storage->IncrementStats(stats::fuchsia_invalid_event);
         return;
       }
+
+      // Absolute time extension
+      uint64_t base_tick;
+      if (cursor.ReadUint64(&base_tick)) {
+        int64_t epoch_ns;
+        if(!cursor.ReadInt64(&epoch_ns)) {
+          context_->storage->IncrementStats(stats::fuchsia_invalid_event);
+          return;
+        }
+
+        int64_t base_trace_ns = fuchsia_trace_utils::TicksToNs(
+          base_tick, current_provider_->ticks_per_second);
+        if (base_trace_ns < 0) {
+          storage->IncrementStats(stats::fuchsia_timestamp_overflow);
+          return;
+        }
+
+        std::vector<ClockTracker::ClockValue> clocks;
+        uint64_t unit_multiplier_ns = 1;
+        bool is_incremental = false;
+        clocks.emplace_back(kTraceClock, base_trace_ns, unit_multiplier_ns, is_incremental);
+        clocks.emplace_back(kRealtimeClock, epoch_ns, unit_multiplier_ns, is_incremental);
+
+        context_->clock_tracker->SetTraceTimeClock(kTraceClock);
+        uint32_t snapshot_id = context_->clock_tracker->AddSnapshot(clocks);
+
+        tables::ClockSnapshotTable::Row row;
+        row.ts = base_trace_ns;
+        row.clock_id = kRealtimeClock;
+        row.clock_value = epoch_ns;
+        row.clock_name = context_->storage->InternString("REALTIME");
+        row.snapshot_id = snapshot_id;
+
+        auto* snapshot_table = context_->storage->mutable_clock_snapshot_table();
+        snapshot_table->Insert(row);
+      }
+
       break;
     }
     case kString: {
