@@ -104,6 +104,7 @@ export class SearchController extends Controller<'main'> {
       });
       publishSearchResult({
         sliceIds: new Float64Array(0),
+        sliceIdSet: new Set(),
         tsStarts: new Float64Array(0),
         utids: new Float64Array(0),
         sources: [],
@@ -269,6 +270,7 @@ export class SearchController extends Controller<'main'> {
       sliceIds: new Float64Array(rows),
       tsStarts: new Float64Array(rows),
       utids: new Float64Array(rows),
+      sliceIdSet: new Set(),
       trackIds: [],
       sources: [],
       totalResults: 0,
@@ -295,6 +297,7 @@ export class SearchController extends Controller<'main'> {
       searchResults.sliceIds[i] = it.sliceId;
       searchResults.tsStarts[i] = it.ts;
       searchResults.utids[i] = it.utid;
+      searchResults.sliceIdSet.add(it.sliceId);
     }
     return searchResults;
   }
