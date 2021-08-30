@@ -106,7 +106,7 @@ export class ChromeSliceTrackController extends TrackController<Config, Data> {
       WHERE track_id = ${this.config.trackId} AND
         ts >= (${startNs - this.maxDurNs}) AND
         ts <= ${endNs}
-      GROUP BY depth, tsq`;
+      GROUP BY depth, tsq, isInstant`;
     const queryRes = await this.query(query);
 
     const numRows = queryRes.numRows();
