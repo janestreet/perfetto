@@ -186,6 +186,13 @@ class ClockTracker {
     return Convert(clock_id, timestamp, trace_time_clock_id_);
   }
 
+  base::Optional<int64_t> FromTraceTime(ClockId to_clock_id, int64_t timestamp) {
+    trace_time_clock_id_used_for_conversion_ = true;
+    if (to_clock_id == trace_time_clock_id_)
+      return timestamp;
+    return Convert(trace_time_clock_id_, timestamp, to_clock_id);
+  }
+
   void SetTraceTimeClock(ClockId clock_id) {
     PERFETTO_DCHECK(!IsReservedSeqScopedClockId(clock_id));
     if (trace_time_clock_id_used_for_conversion_ &&
