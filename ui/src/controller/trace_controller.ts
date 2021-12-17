@@ -99,17 +99,6 @@ import {decideTracks} from './track_decider';
 type States = 'init'|'loading_trace'|'ready';
 
 const METRICS = [
-  'android_startup',
-  'android_ion',
-  'android_lmk',
-  'android_dma_heap',
-  'android_thread_time_in_state',
-  'android_surfaceflinger',
-  'android_batt',
-  'android_sysui_cuj',
-  'android_jank',
-  'android_camera',
-  'chrome_dropped_frames',
   'trace_metadata',
 ];
 const FLAGGED_METRICS: Array<[Flag, string]> = METRICS.map(m => {
