@@ -683,7 +683,7 @@ base::Status AbsTimeStr::Run(ClockTracker* tracker,
   }
   // There's no way to format with nanosecond precision in C so we need to append
   char *str_res = static_cast<char*>(calloc(time_buf_size, sizeof(char)));
-  snprintf(str_res, time_buf_size, "%s.%09ld", timebuf, abs_time % nano_scale);
+  snprintf(str_res, time_buf_size, "%s.%09" PRId64, timebuf, abs_time % nano_scale);
 
   destructors.string_destructor = free;
   out = SqlValue::String(str_res);
