@@ -16,6 +16,8 @@
 
 #include "src/trace_processor/trace_processor_impl.h"
 
+#include <inttypes.h>
+#include <time.h>
 #include <algorithm>
 #include <memory>
 
@@ -45,6 +47,7 @@
 #include "src/trace_processor/importers/json/json_trace_tokenizer.h"
 #include "src/trace_processor/importers/proto/metadata_tracker.h"
 #include "src/trace_processor/importers/systrace/systrace_trace_parser.h"
+#include "src/trace_processor/importers/common/clock_tracker.h"
 #include "src/trace_processor/iterator_impl.h"
 #include "src/trace_processor/sqlite/create_function.h"
 #include "src/trace_processor/sqlite/register_function.h"
@@ -65,6 +68,7 @@
 #include "protos/perfetto/trace/perfetto/perfetto_metatrace.pbzero.h"
 #include "protos/perfetto/trace/trace.pbzero.h"
 #include "protos/perfetto/trace/trace_packet.pbzero.h"
+#include "protos/perfetto/trace/clock_snapshot.pbzero.h"
 
 #include "src/trace_processor/metrics/all_chrome_metrics.descriptor.h"
 #include "src/trace_processor/metrics/metrics.descriptor.h"
@@ -630,6 +634,62 @@ base::Status ExtractArg::Run(TraceStorage* storage,
   PERFETTO_FATAL("For GCC");
 }
 
+struct AbsTimeStr : public SqlFunction {
+  using Context = ClockTracker;
+  static base::Status Run(ClockTracker* tracker,
+                          size_t argc,
+                          sqlite3_value** argv,
+                          SqlValue& out,
+                          Destructors& destructors);
+};
+
+base::Status AbsTimeStr::Run(ClockTracker* tracker,
+                             size_t argc,
+                             sqlite3_value** argv,
+                             SqlValue& out,
+                             Destructors& destructors) {
+  if (argc != 1) {
+    return base::ErrStatus("ABS_TIME_STR: 1 arg required");
+  }
+
+  // If the timestamp is null, just return null as the result.
+  if (sqlite3_value_type(argv[0]) == SQLITE_NULL) {
+    return base::OkStatus();
+  }
+  if (sqlite3_value_type(argv[0]) != SQLITE_INTEGER) {
+    return base::ErrStatus("ABS_TIME_STR: 1st argument should be timestamp");
+  }
+
+  int64_t ts = static_cast<int64_t>(sqlite3_value_int64(argv[0]));
+  base::Optional<int64_t> opt_abs_time = 
+    tracker->FromTraceTime(protos::pbzero::ClockSnapshot::Clock::REALTIME, ts);
+
+  if (!opt_abs_time) {
+    return base::OkStatus();
+  }
+
+  // Format the time as a string in the extension to avoid JS truncating numbers
+  int64_t abs_time = opt_abs_time.value();
+  constexpr int64_t nano_scale = 1000000000ll;
+  time_t abs_time_s = static_cast<time_t>(abs_time / nano_scale);
+  struct tm *abs_tm = localtime(&abs_time_s);
+  if (!abs_tm) {
+    return base::OkStatus();
+  }
+  constexpr int time_buf_size = 64;
+  char timebuf[time_buf_size];
+  if(!strftime(timebuf, time_buf_size, "%Y-%m-%d %T", abs_tm)) {
+    return base::OkStatus();
+  }
+  // There's no way to format with nanosecond precision in C so we need to append
+  char *str_res = static_cast<char*>(calloc(time_buf_size, sizeof(char)));
+  snprintf(str_res, time_buf_size, "%s.%09ld", timebuf, abs_time % nano_scale);
+
+  destructors.string_destructor = free;
+  out = SqlValue::String(str_res);
+  return base::OkStatus();
+}
+
 std::vector<std::string> SanitizeMetricMountPaths(
     const std::vector<std::string>& mount_paths) {
   std::vector<std::string> sanitized;
@@ -873,6 +933,7 @@ TraceProcessorImpl::TraceProcessorImpl(const Config& cfg)
   RegisterFunction<ExportJson>(db, "EXPORT_JSON", 1, context_.storage.get(),
                                false);
   RegisterFunction<ExtractArg>(db, "EXTRACT_ARG", 2, context_.storage.get());
+  RegisterFunction<AbsTimeStr>(db, "ABS_TIME_STR", 1, context_.clock_tracker.get());
   RegisterFunction<CreateFunction>(
       db, "CREATE_FUNCTION", 3,
       std::unique_ptr<CreateFunction::Context>(
