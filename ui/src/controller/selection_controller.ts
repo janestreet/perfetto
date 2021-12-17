@@ -135,7 +135,7 @@ export class SelectionController extends Controller<'main'> {
     }
 
     const promisedDetails = this.args.engine.query(`
-      SELECT * FROM ${leafTable} WHERE id = ${selectedId};
+      SELECT *, ABS_TIME_STR(ts) as abs_time FROM ${leafTable} WHERE id = ${selectedId};
     `);
 
     const [details, args, description] =
@@ -149,6 +149,7 @@ export class SelectionController extends Controller<'main'> {
     // Long term these should be handled generically as args but for now
     // handle them specially:
     let ts = undefined;
+    let abs_time = undefined;
     let dur = undefined;
     let name = undefined;
     let category = undefined;
@@ -168,6 +169,9 @@ export class SelectionController extends Controller<'main'> {
           break;
         case 'thread_ts':
           thread_ts = fromNs(Number(v));
+          break;
+        case 'abs_time':
+          if(v) abs_time = `${v}`;
           break;
         case 'name':
           name = `${v}`;
@@ -195,6 +199,7 @@ export class SelectionController extends Controller<'main'> {
       id: selectedId,
       ts,
       thread_ts,
+      abs_time,
       dur,
       thread_dur,
       name,
