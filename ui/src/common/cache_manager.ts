@@ -32,6 +32,7 @@ export async function cacheTrace(
   let url = '';
   let contentLength = 0;
   let localOnly = false;
+  if(!window.caches) return false;
   switch (traceSource.type) {
     case 'ARRAY_BUFFER':
       trace = traceSource.buffer;
@@ -74,6 +75,7 @@ export async function cacheTrace(
 
 export async function tryGetTrace(traceUuid: string):
     Promise<TraceArrayBufferSource|undefined> {
+  if(!window.caches) return undefined;
   await deleteStaleEntries(await caches.open(TRACE_CACHE_NAME));
   const response = await caches.match(
       `/_${TRACE_CACHE_NAME}/${traceUuid}`, {cacheName: TRACE_CACHE_NAME});
@@ -91,6 +93,7 @@ export async function tryGetTrace(traceUuid: string):
 }
 
 async function deleteStaleEntries(traceCache: Cache) {
+  if (!window.caches) return;
   /*
    * Loop through stored caches and invalidate all but the most recent 10.
    */
