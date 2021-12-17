@@ -1095,10 +1095,6 @@ class TrackDecider {
       from sched join thread using(utid)
       group by upid
     ) using(upid)
-    left join (select upid, max(value) as total_cycles
-      from android_thread_time_in_state_event
-      group by upid
-    ) using(upid)
     left join (
       select
         distinct(upid) as upid,
@@ -1115,7 +1111,6 @@ class TrackDecider {
     order by
       hasHeapProfiles desc,
       total_dur desc,
-      total_cycles desc,
       the_tracks.upid,
       the_tracks.utid;
   `);
