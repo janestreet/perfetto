@@ -43,6 +43,7 @@ type Description = Map<string, string>;
 
 export interface SliceDetails {
   ts?: number;
+  abs_time?: string;
   dur?: number;
   thread_ts?: number;
   thread_dur?: number;

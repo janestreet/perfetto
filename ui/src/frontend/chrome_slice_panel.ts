@@ -149,6 +149,9 @@ export class ChromeSliceDetailsPanel extends SlicePanel {
               'N/A' :
               sliceInfo.category);
       builder.add('Start time', timeToCode(sliceInfo.ts));
+      if(sliceInfo.abs_time !== undefined) {
+        builder.add('Real Time (Local to UI)', sliceInfo.abs_time);
+      }
       builder.add(
           'Duration', this.computeDuration(sliceInfo.ts, sliceInfo.dur));
       if (sliceInfo.thread_ts !== undefined &&
