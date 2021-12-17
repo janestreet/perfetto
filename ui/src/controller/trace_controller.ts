@@ -427,7 +427,9 @@ export class TraceController extends Controller<States> {
     }));
 
     globals.dispatchMultiple(actions);
-    Router.navigate(`#!/viewer?local_cache_key=${traceUuid}`);
+    if (traceUuid && traceUuid != '') {
+      Router.navigate(`#!/viewer?local_cache_key=${traceUuid}`);
+    }
 
     // Make sure the helper views are available before we start adding tracks.
     await this.initialiseHelperViews();
