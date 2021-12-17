@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NUM, NUM_NULL, STR} from '../../common/query_result';
-import {fromNs, toNs} from '../../common/time';
+import { NUM, NUM_NULL, STR } from '../../common/query_result';
+import { fromNs, toNs } from '../../common/time';
 import {
   TrackController,
   trackControllerRegistry,
 } from '../../controller/track_controller';
 
-import {Config, Data, SLICE_TRACK_KIND} from './common';
+import { Config, Data, SLICE_TRACK_KIND } from './common';
 
 // the lowest bucketNs gets is 2, but add some room in case of fp error
 const MIN_QUANT_NS = 3;
@@ -29,7 +29,7 @@ export class ChromeSliceTrackController extends TrackController<Config, Data> {
   private maxDurNs = 0;
 
   async onBoundsChange(start: number, end: number, resolution: number):
-      Promise<Data> {
+    Promise<Data> {
     const startNs = toNs(start);
     const endNs = toNs(end);
 
@@ -52,12 +52,13 @@ export class ChromeSliceTrackController extends TrackController<Config, Data> {
           SELECT max(iif(dur = -1, (SELECT end_ts FROM trace_bounds) - ts, dur))
           AS maxDur FROM ${tableName} WHERE track_id = ${this.config.trackId}`;
       const queryRes = await this.query(query);
-      this.maxDurNs = queryRes.firstRow({maxDur: NUM_NULL}).maxDur || 0;
+      this.maxDurNs = queryRes.firstRow({ maxDur: NUM_NULL }).maxDur || 0;
     }
 
     // Buckets are always even and positive, don't quantize once we zoom to
     // nanosecond-scale, so that we can see exact sizes.
     let tsq = `ts`;
+    // the lowest bucketNs gets is 2, but add some room in case of fp error
     if (bucketNs > MIN_QUANT_NS) {
       tsq = `(ts + ${bucketNs / 2}) / ${bucketNs} * ${bucketNs}`;
     }
@@ -153,7 +154,7 @@ export class ChromeSliceTrackController extends TrackController<Config, Data> {
         // it is less than or equal to one, incase the thread duration exceeds
         // the total duration.
         cpuTimeRatio =
-            Math.min(Math.round((it.threadDur / it.dur) * 100) / 100, 1);
+          Math.min(Math.round((it.threadDur / it.dur) * 100) / 100, 1);
       }
       slices.cpuTimeRatio![row] = cpuTimeRatio;
     }
