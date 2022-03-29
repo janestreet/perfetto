@@ -14,8 +14,6 @@
 
 import * as m from 'mithril';
 
-import {channelChanged, getNextChannel, setChannel} from '../common/channels';
-
 import {globals} from './globals';
 import {createPage} from './pages';
 
@@ -27,35 +25,10 @@ export const HomePage = createPage({
         m(
             '.home-page-center',
             m('.home-page-title', 'Perfetto'),
-            m(`img.logo[src=${globals.root}assets/logo-3d.png]`),
-            m(
-                'div.channel-select',
-                m('div',
-                  'Feeling adventurous? Try our bleeding edge Canary version'),
-                m(
-                    'fieldset',
-                    mkChan('stable'),
-                    mkChan('canary'),
-                    m('.highlight'),
-                    ),
-                m(`.home-page-reload${channelChanged() ? '.show' : ''}`,
-                  'You need to reload the page for the changes to have effect'),
-                ),
+          m(`img.logo[src=${globals.root}assets/logo-3d.png]`),
             ),
         m('a.privacy',
           {href: 'https://policies.google.com/privacy', target: '_blank'},
           'Privacy policy'));
   },
 });
-
-function mkChan(chan: string) {
-  const checked = getNextChannel() === chan ? '[checked=true]' : '';
-  return [
-    m(`input[type=radio][name=chan][id=chan_${chan}]${checked}`, {
-      onchange: () => {
-        setChannel(chan);
-      },
-    }),
-    m(`label[for=chan_${chan}]`, chan),
-  ];
-}
