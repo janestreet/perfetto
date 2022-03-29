@@ -24,7 +24,7 @@ export const HomePage = createPage({
       '.page.home-page',
       m(
         '.home-page-center',
-        m('.home-page-title', 'Perfetto'),
+        m('.home-page-title', 'magic-trace'),
         m(`img.logo[src=${globals.root}assets/logo-3d.png]`),
       ),
       /*
