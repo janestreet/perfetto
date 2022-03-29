@@ -16,8 +16,7 @@ import * as m from 'mithril';
 
 import {assertExists, assertTrue} from '../base/logging';
 import {Actions} from '../common/actions';
-import {getCurrentChannel} from '../common/channels';
-import {TRACE_SUFFIX} from '../common/constants';
+import { getCurrentChannel } from '../common/channels';
 import {ConversionJobStatus} from '../common/conversion_jobs';
 import {EngineMode, TraceArrayBufferSource} from '../common/state';
 import * as version from '../gen/perfetto_version';
@@ -34,11 +33,10 @@ import {showModal} from './modal';
 import {Router} from './router';
 import {isDownloadable, isShareable} from './trace_attrs';
 import {
-  convertToJson,
-  convertTraceToJsonAndDownload,
-  convertTraceToSystraceAndDownload
+  convertToJson
 } from './trace_converter';
 
+/*
 const ALL_PROCESSES_QUERY = 'select name, pid from process order by name;';
 
 const CPU_TIME_FOR_PROCESSES = `
@@ -103,12 +101,14 @@ select query,
     round((started - first.ts)/1e6) as t_start_ms
 from sqlstats, first
 order by started desc`;
+*/
 
 const GITILES_URL =
     'https://android.googlesource.com/platform/external/perfetto';
 
 let lastTabTitle = '';
 
+/*
 function createCannedQuery(query: string): (_: Event) => void {
   return (e: Event) => {
     e.preventDefault();
@@ -135,6 +135,11 @@ const EXAMPLE_ANDROID_TRACE_URL =
 
 const EXAMPLE_CHROME_TRACE_URL =
     'https://storage.googleapis.com/perfetto-misc/example_chrome_trace_4s_1.json';
+*/
+
+
+const EXAMPLE_OCAML_TRACE_URL = globals.root + "assets/ocaml.ftf"
+const EXAMPLE_C_TRACE_URL = globals.root + "assets/c.ftf"
 
 interface SectionItem {
   t: string;
@@ -163,12 +168,14 @@ const SECTIONS: Section[] = [
     expanded: true,
     items: [
       {t: 'Open trace file', a: popupFileSelectionDialog, i: 'folder_open'},
+      /*
       {
         t: 'Open with legacy UI',
         a: popupFileSelectionDialogOldUI,
         i: 'filter_none'
       },
       {t: 'Record new trace', a: navigateRecord, i: 'fiber_smart_record'},
+      */
     ],
   },
 
@@ -188,18 +195,23 @@ const SECTIONS: Section[] = [
         isPending: () => globals.getConversionJobStatus('create_permalink') ===
             ConversionJobStatus.InProgress,
       },
+      /*
       {
         t: 'Download',
         a: downloadTrace,
         i: 'file_download',
         checkDownloadDisabled: true,
       },
+      */
       {t: 'Query (SQL)', a: navigateAnalyze, i: 'control_camera'},
+      /*
       {t: 'Metrics', a: navigateMetrics, i: 'speed'},
       {t: 'Info and stats', a: navigateInfo, i: 'info'},
+      */
     ],
   },
 
+  /*
   {
     title: 'Convert trace',
     summary: 'Convert to other formats',
@@ -234,12 +246,14 @@ const SECTIONS: Section[] = [
 
     ],
   },
+  */
 
   {
     title: 'Example Traces',
     expanded: true,
     summary: 'Open an example trace',
     items: [
+      /*
       {
         t: 'Open Android example',
         a: openTraceUrl(EXAMPLE_ANDROID_TRACE_URL),
@@ -248,6 +262,17 @@ const SECTIONS: Section[] = [
       {
         t: 'Open Chrome example',
         a: openTraceUrl(EXAMPLE_CHROME_TRACE_URL),
+        i: 'description'
+      },
+      */
+      {
+        t: 'OCaml',
+        a: openTraceUrl(EXAMPLE_OCAML_TRACE_URL),
+        i: 'description'
+      },
+      {
+        t: 'C',
+        a: openTraceUrl(EXAMPLE_C_TRACE_URL),
         i: 'description'
       },
     ],
@@ -259,16 +284,24 @@ const SECTIONS: Section[] = [
     summary: 'Documentation & Bugs',
     items: [
       {t: 'Keyboard shortcuts', a: openHelp, i: 'help'},
-      {t: 'Documentation', a: 'https://perfetto.dev', i: 'find_in_page'},
+      { t: 'Documentation', a: 'https://github.com/janestreet/magic-trace', i: 'find_in_page' },
+      /*
       {t: 'Flags', a: navigateFlags, i: 'emoji_flags'},
+      */
       {
         t: 'Report a bug',
-        a: 'https://goto.google.com/perfetto-ui-bug',
+        a: 'https://github.com/janestreet/magic-trace/issues',
         i: 'bug_report'
       },
+      {
+        t: 'About',
+        a: 'https://github.com/janestreet/magic-trace/wiki/About-the-UI',
+        i: 'info'
+      }
     ],
   },
 
+  /*
   {
     title: 'Sample queries',
     summary: 'Compute summary statistics',
@@ -306,6 +339,7 @@ const SECTIONS: Section[] = [
       },
     ],
   },
+  */
 
 ];
 
@@ -325,11 +359,13 @@ function popupFileSelectionDialog(e: Event) {
   getFileElement().click();
 }
 
+/*
 function popupFileSelectionDialogOldUI(e: Event) {
   e.preventDefault();
   getFileElement().dataset['useCatapultLegacyUi'] = '1';
   getFileElement().click();
 }
+*/
 
 function downloadTraceFromUrl(url: string): Promise<File> {
   return m.request({
@@ -368,6 +404,7 @@ export async function getCurrentTrace(): Promise<Blob> {
   }
 }
 
+/*
 function openCurrentTraceWithOldUI(e: Event) {
   e.preventDefault();
   assertTrue(isTraceLoaded());
@@ -409,6 +446,7 @@ function convertTraceToJson(e: Event) {
         throw new Error(`Failed to get current trace ${error}`);
       });
 }
+*/
 
 export function isTraceLoaded(): boolean {
   const engine = Object.values(globals.state.engines)[0];
@@ -507,16 +545,19 @@ function openInOldUIWithSizeCheck(trace: Blob) {
   return;
 }
 
+/*
 function navigateRecord(e: Event) {
   e.preventDefault();
   Router.navigate('#!/record');
 }
+*/
 
 function navigateAnalyze(e: Event) {
   e.preventDefault();
   Router.navigate('#!/query');
 }
 
+/*
 function navigateFlags(e: Event) {
   e.preventDefault();
   Router.navigate('#!/flags');
@@ -531,6 +572,7 @@ function navigateInfo(e: Event) {
   e.preventDefault();
   Router.navigate('#!/info');
 }
+*/
 
 function navigateViewer(e: Event) {
   e.preventDefault();
@@ -574,6 +616,7 @@ function shareTrace(e: Event) {
   }
 }
 
+/*
 function downloadTrace(e: Event) {
   e.preventDefault();
   if (!isDownloadable() || !isTraceLoaded()) return;
@@ -610,7 +653,7 @@ function downloadTrace(e: Event) {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
-
+*/
 
 const EngineRPCWidget: m.Component = {
   view() {
