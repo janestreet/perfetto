@@ -63,15 +63,6 @@ export class ChromeSliceTrackController extends TrackController<Config, Data> {
       tsq = `(ts + ${bucketNs / 2}) / ${bucketNs} * ${bucketNs}`;
     }
 
-    // Buckets are always even and positive, don't quantize once we zoom to
-    // nanosecond-scale, so that we can see exact sizes.
-    let tsq = `ts`;
-    // the lowest bucketNs gets is 2, but add some room in case of fp error
-    const minQuantNs = 3;
-    if (bucketNs > minQuantNs) {
-      tsq = `(ts + ${bucketNs / 2}) / ${bucketNs} * ${bucketNs}`;
-    }
-
     const query = `
       SELECT
         ${tsq} as tsq,
