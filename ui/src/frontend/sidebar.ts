@@ -969,7 +969,7 @@ export class Sidebar implements m.ClassComponent {
               break;
           }
           if (traceTitle !== '') {
-            const tabTitle = `${traceTitle} - Perfetto UI`;
+            const tabTitle = `${traceTitle} - magic-trace`;
             if (tabTitle !== lastTabTitle) {
               document.title = lastTabTitle = tabTitle;
             }
