@@ -144,10 +144,6 @@ const EXAMPLE_CHROME_TRACE_URL =
     'https://storage.googleapis.com/perfetto-misc/example_chrome_trace_4s_1.json';
 */
 
-
-const EXAMPLE_OCAML_TRACE_URL = globals.root + "assets/ocaml.ftf"
-const EXAMPLE_C_TRACE_URL = globals.root + "assets/c.ftf"
-
 interface SectionItem {
   t: string;
   a: string|((e: Event) => void);
@@ -274,12 +270,17 @@ const SECTIONS: Section[] = [
       */
       {
         t: 'OCaml',
-        a: openTraceUrl(EXAMPLE_OCAML_TRACE_URL),
+        a: openTraceUrl(globals.root + "assets/ocaml.ftf"),
         i: 'description'
       },
       {
-        t: 'C',
-        a: openTraceUrl(EXAMPLE_C_TRACE_URL),
+        t: 'C - Hello World',
+        a: openTraceUrl(globals.root + "assets/c-hello-world.ftf"),
+        i: 'description'
+      },
+      {
+        t: 'C - Demo',
+        a: openTraceUrl(globals.root + "assets/c-demo.ftf"),
         i: 'description'
       },
     ],
