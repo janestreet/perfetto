@@ -782,6 +782,14 @@ const SidebarFooter: m.Component = {
   view() {
     return m(
         '.sidebar-footer',
+	m('.js-footer',
+	  m('a',
+	    { href: "https://janestreet.com", title: "Jane Street", target: "_blank" },
+	    m(`img.js-logo[src=${globals.root}assets/js-logo.png]`)
+	   ),
+            m('p.footnote', 'magic-trace is an open source project by Jane Street')
+	),
+	m('.buttons-container',
         m('button',
           {
             onclick: () => globals.dispatch(Actions.togglePerfDebug({})),
@@ -800,7 +808,8 @@ const SidebarFooter: m.Component = {
                 target: '_blank',
               },
               `${version.VERSION.substr(0, 11)}`),
-            ),
+            )
+	 )
     );
   }
 };
