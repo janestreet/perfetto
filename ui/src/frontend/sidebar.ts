@@ -784,7 +784,7 @@ const SidebarFooter: m.Component = {
         '.sidebar-footer',
 	m('.js-footer',
 	  m('a',
-	    { href: "https://janestreet.com", title: "Jane Street", target: "_blank" },
+	    { href: "https://janestreet.com/join-jane-street/", title: "Jane Street", target: "_blank" },
 	    m(`img.js-logo[src=${globals.root}assets/LOGO_stacked_white.png]`)
 	   )
 	),
