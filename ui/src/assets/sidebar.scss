@@ -227,7 +227,8 @@
       height: - var(--sidebar-padding-bottom);
       margin-top: auto;
       .js-footer {
-	      padding:20px 5px 5px;
+	      margin: 0 auto;
+	      padding:20px;
 	      img { width: 120px; }
 	      .footnote { font-size: 10px; color: #cfcfcf; }
       }

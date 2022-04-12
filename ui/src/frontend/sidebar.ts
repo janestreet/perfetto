@@ -786,8 +786,7 @@ const SidebarFooter: m.Component = {
 	  m('a',
 	    { href: "https://janestreet.com", title: "Jane Street", target: "_blank" },
 	    m(`img.js-logo[src=${globals.root}assets/LOGO_stacked_white.png]`)
-	   ),
-            m('p.footnote', 'magic-trace is an open source project by Jane Street')
+	   )
 	),
 	m('.buttons-container',
         m('button',
