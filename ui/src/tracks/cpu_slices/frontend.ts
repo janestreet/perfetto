@@ -76,7 +76,7 @@ class CpuSliceTrack extends Track<Config, Data> {
     assertTrue(data.starts.length === data.utids.length);
 
     ctx.textAlign = 'center';
-    ctx.font = '12px Roboto Condensed';
+    ctx.font = '12px';
     const charWidth = ctx.measureText('dbpqaouk').width / 8;
 
     const rawStartIdx =
@@ -140,10 +140,10 @@ class CpuSliceTrack extends Track<Config, Data> {
       subTitle = cropText(subTitle, charWidth, rectWidth);
       const rectXCenter = rectStart + rectWidth / 2;
       ctx.fillStyle = '#fff';
-      ctx.font = '12px Roboto Condensed';
+      ctx.font = '12px';
       ctx.fillText(title, rectXCenter, MARGIN_TOP + RECT_HEIGHT / 2 - 1);
       ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-      ctx.font = '10px Roboto Condensed';
+      ctx.font = '10px';
       ctx.fillText(subTitle, rectXCenter, MARGIN_TOP + RECT_HEIGHT / 2 + 9);
     }
 

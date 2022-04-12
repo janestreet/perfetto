@@ -64,7 +64,7 @@ export class ChromeSliceTrack extends Track<Config, Data> {
         timeScale.timeToPx(data.end),
     );
 
-    ctx.font = '12px Roboto Condensed';
+    ctx.font = '12px';
     ctx.textAlign = 'center';
 
     // measuretext is expensive so we only use it once.
