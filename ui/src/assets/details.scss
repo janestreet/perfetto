@@ -33,7 +33,7 @@
       overflow: hidden;
 
       .tab {
-        font-family: 'Roboto Condensed', sans-serif;
+        font-family: var(--main-font);
         color: #3c4b5d;
         padding: 3px 10px 0 10px;
         margin-top: 3px;
@@ -83,7 +83,7 @@
     }
 
     .handle-title {
-      font-family: 'Roboto Condensed', sans-serif;
+      font-family: var(--main-font);
       font-weight: 300;
       color: #3c4b5d;
       margin-left: 5px;
@@ -95,7 +95,7 @@
 }
 
 .details-panel {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: var(--main-font);
   font-weight: 300;
   color: #3c4b5d;
 
@@ -326,7 +326,7 @@ table.half-width {
   display: flex;
   flex-direction: column;
   height: 100%;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: var(--main-font);
   font-weight: 300;
   color: #3c4b5d;
 
@@ -379,7 +379,7 @@ table.half-width {
   height: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: var(--main-font);
 
   header {
     position: sticky;

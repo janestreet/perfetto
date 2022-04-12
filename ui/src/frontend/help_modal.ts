@@ -37,7 +37,7 @@ function keycap(key: string) {
 function showHelp() {
   helpModelOpen = true;
   showModal({
-    title: 'Perfetto Help',
+    title: 'Magic-Trace Help',
     content: m(
         '.help',
         m('h2', 'Navigation'),
