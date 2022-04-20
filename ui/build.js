@@ -112,7 +112,7 @@ const cfg = {
 
 const RULES = [
   {r: /ui\/src\/assets\/index.html/, f: copyIndexHtml},
-  {r: /ui\/src\/assets\/((.*)[.](png|ftf|woff2))/, f: copyAssets},
+  {r: /ui\/src\/assets\/((.*)[.](png|ftf|fxt.gz|woff2))/, f: copyAssets},
   {r: /buildtools\/typefaces\/(.+[.]woff2)/, f: copyAssets},
   {r: /buildtools\/catapult_trace_viewer\/(.+(js|html))/, f: copyAssets},
   {r: /ui\/src\/assets\/.+[.]scss/, f: compileScss},
