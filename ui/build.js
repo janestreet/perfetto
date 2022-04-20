@@ -123,7 +123,7 @@ const RULES = [
   {r: /ui\/src\/assets\/index.html/, f: copyIndexHtml},
   {r: /ui\/src\/assets\/bigtrace.html/, f: copyBigtraceHtml},
   {r: /ui\/src\/open_perfetto_trace\/index.html/, f: copyOpenPerfettoTraceHtml},
-  {r: /ui\/src\/assets\/((.*)[.]png)/, f: copyAssets},
+  {r: /ui\/src\/assets\/((.*)[.](png|fxt.gz))/, f: copyAssets},
   {r: /ui\/src\/assets\/(data_explorer\/base-page\.json)/, f: copyAssets},
   {r: /ui\/src\/assets\/(data_explorer\/examples\/(.*)[.]json)/, f: copyAssets},
   {r: /ui\/src\/assets\/(data_explorer\/node_info\/(.*)[.]md)/, f: copyAssets},
