@@ -284,18 +284,18 @@ const SECTIONS: Section[] = [
       },
       */
       {
-        t: 'OCaml',
-        a: openTraceUrl(globals.root + "assets/ocaml.ftf"),
+        t: 'C - Demo',
+        a: openTraceUrl(globals.root + "assets/c-demo.fxt.gz"),
+        i: 'description'
+      },
+      {
+        t: 'OCaml - Hello World',
+        a: openTraceUrl(globals.root + "assets/ocaml-hello-world.fxt.gz"),
         i: 'description'
       },
       {
         t: 'C - Hello World',
-        a: openTraceUrl(globals.root + "assets/c-hello-world.ftf"),
-        i: 'description'
-      },
-      {
-        t: 'C - Demo',
-        a: openTraceUrl(globals.root + "assets/c-demo.ftf"),
+        a: openTraceUrl(globals.root + "assets/c-hello-world.fxt.gz"),
         i: 'description'
       },
     ],
