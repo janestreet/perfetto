@@ -16,12 +16,6 @@ import {AppImpl} from '../../core/app_impl';
 import {App} from '../../public/app';
 import {PerfettoPlugin, PluginDescriptor} from '../../public/plugin';
 
-const EXAMPLE_ANDROID_TRACE_URL =
-  'https://storage.googleapis.com/perfetto-misc/example_android_trace_15s';
-
-const EXAMPLE_CHROME_TRACE_URL =
-  'https://storage.googleapis.com/perfetto-misc/chrome_example_wikipedia.perfetto_trace.gz';
-
 function openTraceUrl(app: App, url: string): void {
   app.analytics.logEvent('Trace Actions', 'Open example trace');
   AppImpl.instance.openTraceFromUrl(url);
@@ -29,32 +23,47 @@ function openTraceUrl(app: App, url: string): void {
 
 class ExampleTracesPlugin implements PerfettoPlugin {
   onActivate(ctx: App) {
-    const OPEN_EXAMPLE_ANDROID_TRACE_COMMAND_ID =
-      'perfetto.CoreCommands#openExampleAndroidTrace';
+    const OPEN_C_DEMO_TRACE_COMMAND_ID =
+      'perfetto.CoreCommands#openCDemoTrace';
     ctx.commands.registerCommand({
-      id: OPEN_EXAMPLE_ANDROID_TRACE_COMMAND_ID,
-      name: 'Open Android example',
+      id: OPEN_C_DEMO_TRACE_COMMAND_ID,
+      name: 'C - Demo',
       callback: () => {
-        openTraceUrl(ctx, EXAMPLE_ANDROID_TRACE_URL);
+        openTraceUrl(ctx, globals.root + "assets/c-demo.fxt.gz");
       },
     });
     ctx.sidebar.addMenuItem({
-      commandId: OPEN_EXAMPLE_ANDROID_TRACE_COMMAND_ID,
+      commandId: OPEN_C_DEMO_TRACE_COMMAND_ID,
       group: 'example_traces',
       icon: 'description',
     });
 
-    const OPEN_EXAMPLE_CHROME_TRACE_COMMAND_ID =
-      'perfetto.CoreCommands#openExampleChromeTrace';
+    const OPEN_OCAML_HELLO_WORLD_TRACE_COMMAND_ID =
+      'perfetto.CoreCommands#openOCamlHelloWorldTrace';
     ctx.commands.registerCommand({
-      id: OPEN_EXAMPLE_CHROME_TRACE_COMMAND_ID,
-      name: 'Open Chrome example',
+      id: OPEN_OCAML_HELLO_WORLD_TRACE_COMMAND_ID,
+      name: 'OCaml - Hello World',
       callback: () => {
-        openTraceUrl(ctx, EXAMPLE_CHROME_TRACE_URL);
+        openTraceUrl(ctx, globals.root + "assets/ocaml-hello-world.fxt.gz");
       },
     });
     ctx.sidebar.addMenuItem({
-      commandId: OPEN_EXAMPLE_CHROME_TRACE_COMMAND_ID,
+      commandId: OPEN_OCAML_HELLO_WORLD_TRACE_COMMAND_ID,
+      group: 'example_traces',
+      icon: 'description',
+    });
+
+    const OPEN_C_HELLO_WORLD_TRACE_COMMAND_ID =
+      'perfetto.CoreCommands#openCHelloWorldTrace';
+    ctx.commands.registerCommand({
+      id: OPEN_C_HELLO_WORLD_TRACE_COMMAND_ID,
+      name: 'C - Hello World',
+      callback: () => {
+        openTraceUrl(ctx, globals.root + "assets/c-hello-world.fxt.gz");
+      },
+    });
+    ctx.sidebar.addMenuItem({
+      commandId: OPEN_C_HELLO_WORLD_TRACE_COMMAND_ID,
       group: 'example_traces',
       icon: 'description',
     });
