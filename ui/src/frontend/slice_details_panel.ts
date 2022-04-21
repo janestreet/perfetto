@@ -139,7 +139,7 @@ export class SliceDetailsPanel extends SlicePanel {
       ctx.fillRect(startDraw.x - 1, startDraw.y, 2, 100);
 
       // Wakeup explanation text.
-      ctx.font = '13px Roboto Condensed';
+      ctx.font = '13px';
       ctx.fillStyle = '#3c4b5d';
       if (threadInfo) {
         const displayText = `Wakeup @ ${
@@ -166,7 +166,7 @@ export class SliceDetailsPanel extends SlicePanel {
         const explain2 =
             '(e.g. because of notifying a wait queue it was suspended on) to';
         const explain3 = 'when it started running.';
-        ctx.font = '10px Roboto Condensed';
+        ctx.font = '10px';
         ctx.fillText(explain1, startDraw.x + 70, startDraw.y + 86 + 16);
         ctx.fillText(explain2, startDraw.x + 70, startDraw.y + 86 + 16 + 12);
         ctx.fillText(explain3, startDraw.x + 70, startDraw.y + 86 + 16 + 24);

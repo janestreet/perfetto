@@ -213,7 +213,7 @@ export abstract class BaseSliceTrack<T extends BaseSliceTrackTypes =
     let charWidth = this.charWidth;
     if (charWidth < 0) {
       // TODO(hjd): Centralize font measurement/invalidation.
-      ctx.font = '12px Roboto Condensed';
+      ctx.font = '12px';
       charWidth = this.charWidth = ctx.measureText('dbpqaouk').width / 8;
     }
 
@@ -301,7 +301,7 @@ export abstract class BaseSliceTrack<T extends BaseSliceTrackTypes =
     // Third pass, draw the titles (e.g., process name for sched slices).
     ctx.fillStyle = '#fff';
     ctx.textAlign = 'center';
-    ctx.font = '12px Roboto Condensed';
+    ctx.font = '12px';
     ctx.textBaseline = 'middle';
     for (const slice of vizSlices) {
       if ((slice.flags & SLICE_FLAGS_INSTANT) || !slice.title ||
@@ -319,7 +319,7 @@ export abstract class BaseSliceTrack<T extends BaseSliceTrackTypes =
 
     // Fourth pass, draw the subtitles (e.g., thread name for sched slices).
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.font = '10px Roboto Condensed';
+    ctx.font = '10px';
     for (const slice of vizSlices) {
       if (slice.w < SLICE_MIN_WIDTH_FOR_TEXT_PX || !slice.subTitle ||
           (slice.flags & SLICE_FLAGS_INSTANT)) {

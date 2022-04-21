@@ -138,7 +138,7 @@ export abstract class Track<Config = {}, Data extends TrackData = TrackData> {
   drawTrackHoverTooltip(
       ctx: CanvasRenderingContext2D, pos: {x: number, y: number}, text: string,
       text2?: string) {
-    ctx.font = '10px Roboto Condensed';
+    ctx.font = '10px';
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'left';
 
