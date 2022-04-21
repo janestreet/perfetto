@@ -28,6 +28,8 @@ enum : int {
   demangle_success = 0,
 };
 
+char *ocamlDemangle(const char *mangled_name);
+
 char *itaniumDemangle(const char *mangled_name, char *buf, size_t *n,
                       int *status);
 
