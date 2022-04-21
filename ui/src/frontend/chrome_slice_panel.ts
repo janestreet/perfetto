@@ -64,7 +64,7 @@ function appendPrefix(p1: string, p2: string): string {
 // table. It might be either an index of array element (represented as number),
 // a special indentation cell to ensure minimum column width when indenting
 // an object ('whitespace' literal) or just be absent ('none' literal).
-type ExtraCell = number|'whitespace'|'none';
+type ExtraCell = number | 'whitespace' | 'none';
 
 interface Row {
   // How many columns (empty or with an index) precede a key
@@ -115,7 +115,7 @@ class TableBuilder {
   }
 
   private addTreeInternal(
-      record: ArgsTree, prefix: string, completePrefix: string) {
+    record: ArgsTree, prefix: string, completePrefix: string) {
     if (isArgTreeArray(record)) {
       // Add the current prefix as a separate row
       const row = this.prepareRow();
@@ -135,34 +135,22 @@ class TableBuilder {
         this.stack.pop();
       }
     } else if (isArgTreeMap(record)) {
-      const entries = Object.entries(record);
-      if (entries.length === 1) {
-        // Don't want to create a level of indirection in case object contains
-        // only one value; think of it like file browser in IDEs not showing
-        // intermediate nodes for common hierarchy corresponding to Java package
-        // prefix (e.g. "com/google/perfetto").
-        //
-        // In this case, add key as a prefix part.
-        const [key, value] = entries[0];
-        this.addTreeInternal(
-            value,
-            appendPrefix(prefix, key),
-            appendPrefix(completePrefix, key));
-      } else {
-        if (prefix.length > 0) {
-          const row = this.prepareRow();
-          this.rows.push({
-            indentLevel: row[0],
-            extraCell: row[1],
-            contents: {kind: 'TableHeader', header: prefix},
-            tooltip: completePrefix,
-          });
-          this.stack.push('whitespace');
-        }
-        for (const [key, value] of entries) {
+      if (prefix !== '') {
+        // Add the current prefix as a separate row
+        const row = this.prepareRow();
+        this.rows.push({
+          indentLevel: row[0],
+          extraCell: row[1],
+          contents: {kind: 'TableHeader', header: prefix},
+          tooltip: completePrefix
+        });
+      }
+      for (const [key, value] of Object.entries(record)) {
+        if (prefix === '') {
           this.addTreeInternal(value, key, appendPrefix(completePrefix, key));
-        }
-        if (prefix.length > 0) {
+        } else {
+          this.stack.push('whitespace');
+          this.addTreeInternal(value, key, appendPrefix(completePrefix, key));
           this.stack.pop();
         }
       }
@@ -269,20 +257,20 @@ export class ChromeSliceDetailsPanel extends SlicePanel {
       rightPanel.set('Arguments', argsBuilder);
 
       return m(
-          '.details-panel',
-          m('.details-panel-heading', m('h2', `Slice Details`)),
-          m('.details-table-multicolumn', [
-            this.renderTable(defaultBuilder, '.half-width-panel'),
-            this.renderTables(rightPanel, '.half-width-panel'),
-          ]));
+        '.details-panel',
+        m('.details-panel-heading', m('h2', `Slice Details`)),
+        m('.details-table-multicolumn', [
+          this.renderTable(defaultBuilder, '.half-width-panel'),
+          this.renderTables(rightPanel, '.half-width-panel'),
+        ]));
     } else {
       return m(
-          '.details-panel',
-          m('.details-panel-heading',
-            m(
-                'h2',
-                `Slice Details`,
-                )));
+        '.details-panel',
+        m('.details-panel-heading',
+          m(
+            'h2',
+            `Slice Details`,
+          )));
     }
   }
 
@@ -390,20 +378,20 @@ export class ChromeSliceDetailsPanel extends SlicePanel {
       }
 
       if (indent > 0) {
-        renderedRow.push(m('td.no-highlight', {colspan: indent}));
+        renderedRow.push(m('td.no-highlight', { colspan: indent }));
       }
 
       if (row.extraCell === 'whitespace') {
-        renderedRow.push(m('td.no-highlight.padding', {class: 'array-index'}));
+        renderedRow.push(m('td.no-highlight.padding', { class: 'array-index' }));
       } else if (row.extraCell !== 'none') {
-        renderedRow.push(m('td', {class: 'array-index'}, `[${row.extraCell}]`));
+        renderedRow.push(m('td', { class: 'array-index' }, `[${row.extraCell}]`));
       }
 
       if (isTableHeader(row.contents)) {
         renderedRow.push(m(
-            'th',
-            {colspan: keyColumnCount + 1 - row.indentLevel, title: row.tooltip},
-            row.contents.header));
+          'th',
+          { colspan: keyColumnCount + 1 - row.indentLevel, title: row.tooltip },
+          row.contents.header));
       } else {
         const contents: any[] = [row.contents.key];
         if (row.contents.isArg) {

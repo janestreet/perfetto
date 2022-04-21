@@ -207,7 +207,7 @@ export class SelectionController extends Controller<'main'> {
           trackId = Number(v);
           break;
         default:
-          if (!ignoredColumns.includes(k)) args.set(k, `${v}`);
+          if (!ignoredColumns.includes(k)) args.set(`details.${k}`, `${v}`);
       }
     }
 
@@ -314,7 +314,7 @@ export class SelectionController extends Controller<'main'> {
             'Destination Slice',
             {kind: 'SLICE', trackId: destTrackId, sliceId: Number(value)});
       } else {
-        args.set(name, value);
+        args.set(`args.${name}`, value);
       }
     }
     return args;
