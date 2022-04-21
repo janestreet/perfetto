@@ -15,9 +15,9 @@
 .sidebar {
     --sidebar-padding-bottom: 40px;
     --sidebar-timing: 0.15s;
+    background-color: #4b143f;
     grid-area: sidebar;
     z-index: 4;
-    background-color: #262f3c;
     overflow: hidden;
     width: var(--sidebar-width);
     display: flex;
@@ -25,12 +25,14 @@
     flex-direction: column;
     transition: margin-left var(--anim-easing) var(--sidebar-timing),
                 visibility linear var(--sidebar-timing);
+    display: flex;
+    flex-direction: column;
     >* {
         border-bottom: 1px solid #404854;
     }
     input[type=file] { display:none; }
     >header {
-        font-family: 'Roboto Condensed', sans-serif;
+        //font-family: 'Roboto Condensed', sans-serif;
         font-weight: 700;
         font-size: 24px;
         height: var(--topbar-height);
@@ -51,7 +53,7 @@
           position: absolute;
           font-size: 10px;
           line-height: 10px;
-          font-family: 'Raleway', sans-serif;
+          //font-family: 'Raleway', sans-serif;
           left: 155px;
           top: 7px;
         }
@@ -66,8 +68,8 @@
     }
     .sidebar-button {
       position: fixed;
+      background-color: #4b143f;
       z-index: 5;
-      background-color: #262f3c;
       height: var(--topbar-height);
       left: calc(var(--sidebar-width) - 50px);
       border-radius: 0 5px 5px 0;
@@ -108,8 +110,9 @@
       >.sidebar-scroll-container {
         position: relative;
         min-height: 100%;
-        padding-bottom: var(--sidebar-padding-bottom);
-
+        //padding-bottom: var(--sidebar-padding-bottom);
+	display: flex;
+	flex-direction: column;
         >section {
             @include transition();
             padding: 20px 0;
@@ -118,7 +121,7 @@
                 cursor: pointer;
                 >h1,
                 >h2 {
-                    font-family: 'Raleway', sans-serif;
+                    //font-family: 'Raleway', sans-serif;
                     letter-spacing: 0.25px;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -146,10 +149,10 @@
                 }
             }
             &:hover {
-                background-color: #373f4b;
+                background-color: #4b143f;
             }
             &.expanded {
-                background-color: #19212b;
+                background-color: #21001b;
                 max-height: unset;
                 .section-header {
                   h2 {
@@ -174,7 +177,7 @@
             opacity: 0;
             color: #b4b7ba;
             a {
-                color: #b4b7ba;
+                color: #cfcfcf;
             }
             ul {
                 list-style-type: none;
@@ -187,11 +190,11 @@
                     line-height: 24px;
                     font-size: 14px;
                     font-weight: 400;
-                    font-family: 'Raleway', sans-serif;
                     letter-spacing: 0.5px;
                     padding: 5px 24px;
                     text-decoration: none;
                     display: block;
+
                     &.pending {
                       color: rgba(255, 255, 255, 0.3);
                       &::after {
@@ -224,7 +227,7 @@
                 }
                 .trace-file-name {
                   white-space: break-spaces;
-                  font-family: 'Roboto Condensed', sans-serif;
+                  //font-family: 'Roboto Condensed', sans-serif;
                   word-break: break-all;
                   font-weight: 300;
                   letter-spacing: 0;
@@ -237,16 +240,24 @@
     }
 
     .sidebar-footer {
-      position: absolute;
       bottom: 0;
       width: 100%;
       padding: 2px 10px;
-      display: grid;
       height: - var(--sidebar-padding-bottom);
-      grid-template-columns: repeat(4, min-content);
-      grid-gap: 10px;
+      margin-top: auto;
+      .js-footer {
+	      margin: 0 auto;
+	      padding:20px;
+	      img { width: 110px; }
+	      .footnote { font-size: 10px; color: #cfcfcf; }
+      }
 
-      > button {
+      .buttons-container {
+       grid-template-columns: repeat(4, min-content);
+       display: grid;
+       grid-gap: 10px;
+
+	      > button {
         color: hsl(217, 39%, 94%);
         i {
           font-size: 24px;
@@ -262,7 +273,6 @@
         height: 22px;
         line-height: 22px;
         margin: 1px 0;
-        background: #12161b;
         color: #4e71b3;
         border-radius: 5px;
         font-size: 12px;
@@ -290,12 +300,13 @@
         right: 8px;
         bottom: 3px;
         font-size: 12px;
-        font-family: 'Roboto Condensed', sans-serif;
+        //font-family: 'Roboto Condensed', sans-serif;
         a {
           color: rgba(255, 255, 255, 0.5);
           text-decoration: none;
         }
         margin-top: 11px;
+      }
       }
     }
 }

@@ -14,7 +14,9 @@
 :root {
     --sidebar-width: 256px;
     --topbar-height: 48px;
+    --main-font: 'Alright Sans LTV', sans-serif;
     --monospace-font: 'Roboto Mono', monospace;
+    --bold-font: 'Alright Sans LTV Bold', sans-serif;
     --track-shell-width: 250px;
     --track-border-color: #00000025;
     --anim-easing: cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -66,7 +68,7 @@
   overflow: hidden;
   text-align: left;
   overflow-wrap: break-word;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: var(--main-font);
   font-weight: 300;
   letter-spacing: -0.25px;
 }
@@ -78,7 +80,7 @@
 }
 
 html {
-    font-family: Roboto, verdana, sans-serif;
+    font-family: var(--main-font);
     height: 100%;
     width: 100%;
 }
@@ -190,7 +192,7 @@ button.close {
   grid-area: alerts;
   background-color: #f2f2f2;
   >div {
-    font-family: 'Raleway', sans-serif;
+    font-family: var(--main-font);
     font-weight: 400;
     letter-spacing: 0.25px;
     padding: 1rem;
@@ -274,7 +276,7 @@ button.close {
 .query-error {
     padding: 20px 10px;
     color: hsl(-10, 50%, 50%);
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: var(--main-font);
     font-weight: 300;
 }
 
@@ -518,7 +520,7 @@ header.overview {
   align-content: center;
   background-color: hsl(213, 22%, 82%);
   color: hsl(213, 22%, 20%);
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: var(--main-font);
   font-size: 15px;
   font-weight: 400;
   padding: 4px 10px;
