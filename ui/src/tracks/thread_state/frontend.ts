@@ -66,7 +66,7 @@ class ThreadStateTrack extends Track<Config, Data> {
     );
 
     ctx.textAlign = 'center';
-    ctx.font = '10px Roboto Condensed';
+    ctx.font = '10px';
 
     for (let i = 0; i < data.starts.length; i++) {
       // NOTE: Unlike userspace and scheduling slices, thread state slices are
