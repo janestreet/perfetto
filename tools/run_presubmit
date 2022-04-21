@@ -38,6 +38,13 @@ except (subprocess.CalledProcessError, FileNotFoundError) as e:
 
 IS_WIN = sys.platform.startswith('win')
 
+# Globs for source trees that ship vendored third-party code. They follow
+# upstream's own conventions, not Perfetto's, so the C/C++ presubmit checks
+# (#include paths, banned patterns, etc.) should leave them alone.
+VENDORED_PATH_PATTERNS = [
+    'buildtools/llvm-project/*',
+]
+
 
 def RunAndReportIfLong(func, *args, **kargs):
   """Runs function, reports runtime if it exceeds a limit."""
@@ -362,7 +369,7 @@ def CheckIncludePaths(changed_files: List[str]) -> List[str]:
   files_to_check_list = filter_files(
       changed_files,
       files_to_check=['*.h', '*.cc'],
-      files_to_skip=['examples/sdk/example.cc'])
+      files_to_skip=['examples/sdk/example.cc'] + VENDORED_PATH_PATTERNS)
   error_lines = []
 
   pattern = re.compile(r'^#include "(.*\.h)"')
@@ -658,7 +665,9 @@ def CheckBannedCpp(changed_files: List[str]) -> List[str]:
 
   # Use fnmatch patterns for filtering files
   files_to_check_list = filter_files(
-      changed_files, files_to_check=['*.h', '*.cc'])
+      changed_files,
+      files_to_check=['*.h', '*.cc'],
+      files_to_skip=VENDORED_PATH_PATTERNS)
   errors = []
   comment_pattern = re.compile(r'^\s*//')  # Regex is fine here
 
