@@ -271,11 +271,6 @@ BUILD_DEPS_HOST = [
     # File suffix is the git reference to the commit at which we rearchived the
     # sources, as hosted on https://llvm.googlesource.com/llvm-project.
     # If updating the version, also update bazel/deps.bzl.
-    Dependency(
-        'buildtools/llvm-project.tgz',
-        'https://storage.googleapis.com/perfetto/llvm-project-617a15a9eac96088ae5e9134248d8236e34b91b1.tgz',
-        '7e2541446a27f2a09a84520da7bc93cd71749ba0f17318f2d5291fbf45b97956',
-        'all', 'all'),
 
     # These dependencies are for libunwindstack, which is used by src/profiling.
     Dependency('buildtools/android-core',
