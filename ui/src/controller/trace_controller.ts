@@ -106,19 +106,7 @@ import {VisualisedArgController} from './visualised_args_controller';
 type States = 'init' | 'loading_trace' | 'ready';
 
 const METRICS = [
-  'android_startup',
-  'android_ion',
-  'android_lmk',
-  'android_dma_heap',
-  'android_surfaceflinger',
-  'android_batt',
-  'android_sysui_cuj',
-  'android_camera',
-  'android_other_traces',
-  'chrome_dropped_frames',
-  'chrome_long_latency',
-  'trace_metadata',
-  'android_trusty_workqueues',
+  'trace_metadata'
 ];
 const FLAGGED_METRICS: Array<[Flag, string]> = METRICS.map((m) => {
   const id = `forceMetric${m}`;
