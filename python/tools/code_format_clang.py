@@ -23,6 +23,10 @@ SKIP_PATHS = (
     'src/trace_processor/perfetto_sql/syntaqlite/syntaqlite_perfetto.h',
 )
 
+SKIP_DIRS = (
+    # Vendored LLVM sources (Demangle library) — keep upstream-clean.
+    'buildtools/llvm-project/',)
+
 
 class ClangFormat(CodeFormatterBase):
 
@@ -32,7 +36,10 @@ class ClangFormat(CodeFormatterBase):
 
   def filter_files(self, files: list[str]) -> list[str]:
     files = super().filter_files(files)
-    return [f for f in files if f not in SKIP_PATHS]
+    return [
+        f for f in files
+        if f not in SKIP_PATHS and not any(f.startswith(d) for d in SKIP_DIRS)
+    ]
 
   def run_formatter(self, repo_root: str, check_only: bool, files: list[str]):
     tool = 'third_party/clang-format/clang-format'
