@@ -58,8 +58,8 @@ export class Flamegraph {
   private totalSize = -1;
   // Initialised on first draw() call
   private labelCharWidth = 0;
-  private labelFontStyle = '12px Roboto Mono';
-  private rolloverFontStyle = '12px Roboto Condensed';
+  private labelFontStyle = '12px';
+  private rolloverFontStyle = '12px';
   // Key for the map is depth followed by x coordinate - `depth;x`
   private graphData: Map<string, CallsiteInfoWidth> = new Map();
   private xStartsPerDepth: Map<number, number[]> = new Map();
