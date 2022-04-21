@@ -1189,6 +1189,7 @@ source_set("llvm_demangle") {
     "llvm-project/llvm/lib/Demangle/MicrosoftDemangle.cpp",
     "llvm-project/llvm/lib/Demangle/MicrosoftDemangleNodes.cpp",
     "llvm-project/llvm/lib/Demangle/RustDemangle.cpp",
+    "llvm-project/llvm/lib/Demangle/OcamlDemangle.cpp",
   ]
   deps = [ "//gn:default_deps" ]
 }
