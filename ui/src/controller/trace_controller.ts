@@ -101,7 +101,7 @@ type States = 'init' | 'loading_trace' | 'ready';
 
 const METRICS = [
   'trace_metadata',
-  'android_trusty_workqueues',
+//  'android_trusty_workqueues',
 ];
 const FLAGGED_METRICS: Array<[Flag, string]> = METRICS.map(m => {
   const id = `forceMetric${m}`;
