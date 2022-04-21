@@ -23,6 +23,7 @@ cc_library(
       "llvm/lib/Demangle/MicrosoftDemangle.cpp",
       "llvm/lib/Demangle/MicrosoftDemangleNodes.cpp",
       "llvm/lib/Demangle/RustDemangle.cpp",
+      "llvm/lib/Demangle/OcamlDemangle.cpp",
     ],
     hdrs = [
       "llvm/include/llvm/Demangle/Demangle.h",
