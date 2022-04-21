@@ -14,6 +14,13 @@
 #include <cstdlib>
 #include <cstring>
 
+static bool isOcamlEncoding(const std::string &MangledName) {
+  // caml, followed by an uppercase letter
+  return std::strncmp(MangledName.c_str(), "caml", 4) == 0
+  && MangledName.size() >= 5
+  && isupper(MangledName[4]);
+}
+
 static bool isItaniumEncoding(const char *S) {
   // Itanium encoding requires 1 or 3 leading underscores, followed by 'Z'.
   return std::strncmp(S, "_Z", 2) == 0 || std::strncmp(S, "___Z", 4) == 0;
@@ -54,6 +61,8 @@ bool llvm::nonMicrosoftDemangle(const char *MangledName, std::string &Result) {
     Demangled = rustDemangle(MangledName, nullptr, nullptr, nullptr);
   else if (isDLangEncoding(MangledName))
     Demangled = dlangDemangle(MangledName);
+  else if (isOcamlEncoding(MangledName))
+    Demangled = ocamlDemangle(MangledName);
 
   if (!Demangled)
     return false;
