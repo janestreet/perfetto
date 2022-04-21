@@ -502,6 +502,7 @@ function openTraceUrl(url: string): (e: Event) => void {
     globals.logging.logEvent('Trace Actions', 'Open example trace');
     e.preventDefault();
     globals.dispatch(Actions.openTraceFromUrl({url}));
+    navigateViewer(e);
   };
 }
 
@@ -521,6 +522,7 @@ function onInputElementFileSelectionChanged(e: Event) {
 
   globals.logging.logEvent('Trace Actions', 'Open trace from file');
   globals.dispatch(Actions.openTraceFromFile({file}));
+  navigateViewer(e);
 }
 
 async function openWithLegacyUi(file: File) {
