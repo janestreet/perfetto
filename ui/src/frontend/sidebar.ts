@@ -307,7 +307,7 @@ const SECTIONS: Section[] = [
     summary: 'Documentation & Bugs',
     items: [
       {t: 'Keyboard shortcuts', a: openHelp, i: 'help'},
-      { t: 'Documentation', a: 'https://github.com/janestreet/magic-trace', i: 'find_in_page' },
+      { t: 'Documentation', a: 'https://github.com/janestreet/magic-trace#------magic-trace', i: 'find_in_page' },
       /*
       {t: 'Flags', a: navigateFlags, i: 'emoji_flags'},
       */
