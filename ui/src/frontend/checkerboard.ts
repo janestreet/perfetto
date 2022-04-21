@@ -22,7 +22,7 @@ export function checkerboard(
     leftPx: number,
     rightPx: number): void {
   const widthPx = rightPx - leftPx;
-  ctx.font = '12px Roboto Condensed';
+  ctx.font = '12px';
   ctx.fillStyle = '#eee';
   ctx.fillRect(leftPx, 0, widthPx, heightPx);
   ctx.fillStyle = '#666';

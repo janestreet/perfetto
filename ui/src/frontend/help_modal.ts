@@ -31,7 +31,7 @@ function showHelp() {
   const ctrlOrCmd =
       window.navigator.platform.indexOf('Mac') !== -1 ? 'Cmd' : 'Ctrl';
   showModal({
-    title: 'Perfetto Help',
+    title: 'magic-trace Help',
     content: m(
         '.help',
         m('h2', 'Navigation'),

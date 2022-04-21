@@ -887,6 +887,13 @@ const SidebarFooter: m.Component = {
   view() {
     return m(
         '.sidebar-footer',
+	m('.js-footer',
+	  m('a',
+	    { href: "https://janestreet.com/join-jane-street/", title: "Jane Street", target: "_blank" },
+	    m(`img.js-logo[src=${globals.root}assets/LOGO_stacked_white.png]`)
+	   )
+	),
+	m('.buttons-container',
         m('button',
           {
             onclick: () => globals.dispatch(Actions.togglePerfDebug({})),
@@ -905,7 +912,8 @@ const SidebarFooter: m.Component = {
                 target: '_blank',
               },
               `${version.VERSION.substr(0, 11)}`),
-            ),
+            )
+	 )
     );
   },
 };

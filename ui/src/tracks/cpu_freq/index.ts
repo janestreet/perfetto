@@ -394,7 +394,7 @@ class CpuFreqTrack extends Track<Config, Data> {
       ctx.fillRect(x, zeroY, width, height);
     }
 
-    ctx.font = '10px Roboto Condensed';
+    ctx.font = '10px Roboto';
 
     if (this.hoveredValue !== undefined && this.hoveredTs !== undefined) {
       let text = `${this.hoveredValue.toLocaleString()}kHz`;

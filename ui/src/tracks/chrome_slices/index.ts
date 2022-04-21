@@ -204,7 +204,7 @@ export class ChromeSliceTrack extends Track<Config, Data> {
 
   // Font used to render the slice name on the current track.
   protected getFont() {
-    return '12px Roboto Condensed';
+    return '10px Roboto';
   }
 
   renderCanvas(ctx: CanvasRenderingContext2D): void {

@@ -28,16 +28,14 @@
     }
 
     .home-page-title {
-      font-size: 60px;
+      font-size: 53px;
       margin: 25px;
       text-align: center;
-      font-family: 'Raleway', sans-serif;
-      font-weight: 100;
-      color: #333;
+      font-family: var(--bold-font);
+      color: #4b143f;
     }
 
     .channel-select {
-      font-family: 'Roboto', sans-serif;
       font-size: 1.2rem;
       font-weight: 200;
       margin-top: 3em;
@@ -86,7 +84,6 @@
         z-index: 2;
         text-transform: uppercase;
         font-size: 16px;
-        font-family: 'Raleway';
         font-weight: 400;
         letter-spacing: 0.3px;
       }
@@ -118,7 +115,6 @@
   .privacy {
     grid-area: footer;
     text-decoration: none;
-    font-family: 'Roboto', sans-serif;
     font-weight: 200;
     color: #333;
     font-size: 15px;
