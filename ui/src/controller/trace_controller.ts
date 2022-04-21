@@ -98,6 +98,7 @@ import {VisualisedArgController} from './visualised_args_controller';
 type States = 'init' | 'loading_trace' | 'ready';
 
 const METRICS = [
+  'trace_metadata' /*
   'android_startup',
   'android_ion',
   'android_lmk',
@@ -111,6 +112,7 @@ const METRICS = [
   'chrome_long_latency',
   'trace_metadata',
   'android_trusty_workqueues',
+  */
 ];
 const FLAGGED_METRICS: Array<[Flag, string]> = METRICS.map((m) => {
   const id = `forceMetric${m}`;
@@ -245,7 +247,7 @@ export class TraceController extends Controller<States> {
           app: globals,
         }));
         childControllers.push(
-            Child('pivot_table_redux', PivotTableReduxController, {engine}));
+          Child('pivot_table_redux', PivotTableReduxController, { engine }));
 
         childControllers.push(Child('logs', LogsController, {
           engine,
@@ -656,10 +658,10 @@ export class TraceController extends Controller<States> {
 
     const availableMetrics = [];
     const metricsResult = await engine.query('select name from trace_metrics');
-    for (const it = metricsResult.iter({name: STR}); it.valid(); it.next()) {
+    for (const it = metricsResult.iter({ name: STR }); it.valid(); it.next()) {
       availableMetrics.push(it.name);
     }
-    globals.dispatch(Actions.setAvailableMetrics({availableMetrics}));
+    globals.dispatch(Actions.setAvailableMetrics({ availableMetrics }));
 
     const availableMetricsSet = new Set<string>(availableMetrics);
     for (const [flag, metric] of FLAGGED_METRICS) {
