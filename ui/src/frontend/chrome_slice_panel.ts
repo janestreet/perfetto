@@ -14,14 +14,14 @@
 
 import * as m from 'mithril';
 
-import {Actions} from '../common/actions';
-import {Arg, ArgsTree, isArgTreeArray, isArgTreeMap} from '../common/arg_types';
-import {timeToCode} from '../common/time';
+import { Actions } from '../common/actions';
+import { Arg, ArgsTree, isArgTreeArray, isArgTreeMap } from '../common/arg_types';
+import { timeToCode } from '../common/time';
 
-import {globals, SliceDetails} from './globals';
-import {PanelSize} from './panel';
-import {verticalScrollToTrack} from './scroll_helper';
-import {SlicePanel} from './slice_panel';
+import { globals, SliceDetails } from './globals';
+import { PanelSize } from './panel';
+import { verticalScrollToTrack } from './scroll_helper';
+import { SlicePanel } from './slice_panel';
 
 // Table row contents is one of two things:
 // 1. Key-value pair
@@ -37,7 +37,7 @@ interface TableHeader {
   header: string;
 }
 
-type RowContents = KVPair|TableHeader;
+type RowContents = KVPair | TableHeader;
 
 function isTableHeader(contents: RowContents): contents is TableHeader {
   return contents.kind === 'TableHeader';
@@ -55,7 +55,7 @@ function appendPrefix(p1: string, p2: string): string {
 // table. It might be either an index of array element (represented as number),
 // a special indentation cell to ensure minimum column width when indenting
 // an object ('whitespace' literal) or just be absent ('none' literal).
-type ExtraCell = number|'whitespace'|'none';
+type ExtraCell = number | 'whitespace' | 'none';
 
 interface Row {
   // How many columns (empty or with an index) precede a key
@@ -82,7 +82,7 @@ class TableBuilder {
     this.rows.push({
       indentLevel: 0,
       extraCell: 'none',
-      contents: {kind: 'KVPair', key, value},
+      contents: { kind: 'KVPair', key, value },
     });
   }
 
@@ -106,14 +106,14 @@ class TableBuilder {
   }
 
   private addTreeInternal(
-      record: ArgsTree, prefix: string, completePrefix: string) {
+    record: ArgsTree, prefix: string, completePrefix: string) {
     if (isArgTreeArray(record)) {
       // Add the current prefix as a separate row
       const row = this.prepareRow();
       this.rows.push({
         indentLevel: row[0],
         extraCell: row[1],
-        contents: {kind: 'TableHeader', header: prefix},
+        contents: { kind: 'TableHeader', header: prefix },
         tooltip: completePrefix
       });
 
@@ -126,34 +126,22 @@ class TableBuilder {
         this.stack.pop();
       }
     } else if (isArgTreeMap(record)) {
-      const entries = Object.entries(record);
-      if (entries.length === 1) {
-        // Don't want to create a level of indirection in case object contains
-        // only one value; think of it like file browser in IDEs not showing
-        // intermediate nodes for common hierarchy corresponding to Java package
-        // prefix (e.g. "com/google/perfetto").
-        //
-        // In this case, add key as a prefix part.
-        const [key, value] = entries[0];
-        this.addTreeInternal(
-            value,
-            appendPrefix(prefix, key),
-            appendPrefix(completePrefix, key));
-      } else {
-        if (prefix.length > 0) {
-          const row = this.prepareRow();
-          this.rows.push({
-            indentLevel: row[0],
-            extraCell: row[1],
-            contents: {kind: 'TableHeader', header: prefix},
-            tooltip: completePrefix
-          });
-          this.stack.push('whitespace');
-        }
-        for (const [key, value] of entries) {
+      if (prefix !== '') {
+        // Add the current prefix as a separate row
+        const row = this.prepareRow();
+        this.rows.push({
+          indentLevel: row[0],
+          extraCell: row[1],
+          contents: { kind: 'TableHeader', header: prefix },
+          tooltip: completePrefix
+        });
+      }
+      for (const [key, value] of Object.entries(record)) {
+        if (prefix === '') {
           this.addTreeInternal(value, key, appendPrefix(completePrefix, key));
-        }
-        if (prefix.length > 0) {
+        } else {
+          this.stack.push('whitespace');
+          this.addTreeInternal(value, key, appendPrefix(completePrefix, key));
           this.stack.pop();
         }
       }
@@ -163,7 +151,7 @@ class TableBuilder {
       this.rows.push({
         indentLevel: row[0],
         extraCell: row[1],
-        contents: {kind: 'KVPair', key: prefix, value: record},
+        contents: { kind: 'KVPair', key: prefix, value: record },
         tooltip: completePrefix
       });
     }
@@ -174,28 +162,28 @@ export class ChromeSliceDetailsPanel extends SlicePanel {
   view() {
     const sliceInfo = globals.sliceDetails;
     if (sliceInfo.ts !== undefined && sliceInfo.dur !== undefined &&
-        sliceInfo.name !== undefined) {
+      sliceInfo.name !== undefined) {
       const builder = new TableBuilder();
       builder.add('Name', sliceInfo.name);
       builder.add(
-          'Category',
-          !sliceInfo.category || sliceInfo.category === '[NULL]' ?
-              'N/A' :
-              sliceInfo.category);
+        'Category',
+        !sliceInfo.category || sliceInfo.category === '[NULL]' ?
+          'N/A' :
+          sliceInfo.category);
       builder.add('Start time', timeToCode(sliceInfo.ts));
       builder.add(
-          'Duration', this.computeDuration(sliceInfo.ts, sliceInfo.dur));
+        'Duration', this.computeDuration(sliceInfo.ts, sliceInfo.dur));
       if (sliceInfo.thread_ts !== undefined &&
-          sliceInfo.thread_dur !== undefined) {
+        sliceInfo.thread_dur !== undefined) {
         // If we have valid thread duration, also display a percentage of
         // |thread_dur| compared to |dur|.
         const threadDurFractionSuffix = sliceInfo.thread_dur === -1 ?
-            '' :
-            ` (${(sliceInfo.thread_dur / sliceInfo.dur * 100).toFixed(2)}%)`;
+          '' :
+          ` (${(sliceInfo.thread_dur / sliceInfo.dur * 100).toFixed(2)}%)`;
         builder.add(
-            'Thread duration',
-            this.computeDuration(sliceInfo.thread_ts, sliceInfo.thread_dur) +
-                threadDurFractionSuffix);
+          'Thread duration',
+          this.computeDuration(sliceInfo.thread_ts, sliceInfo.thread_dur) +
+          threadDurFractionSuffix);
       }
 
       for (const [key, value] of this.getProcessThreadDetails(sliceInfo)) {
@@ -205,27 +193,27 @@ export class ChromeSliceDetailsPanel extends SlicePanel {
       }
 
       builder.add(
-          'Slice ID', sliceInfo.id ? sliceInfo.id.toString() : 'Unknown');
+        'Slice ID', sliceInfo.id ? sliceInfo.id.toString() : 'Unknown');
       if (sliceInfo.description) {
         this.fillDescription(sliceInfo.description, builder);
       }
       this.fillArgs(sliceInfo, builder);
       return m(
-          '.details-panel',
-          m('.details-panel-heading', m('h2', `Slice Details`)),
-          m('.details-table', this.renderTable(builder)));
+        '.details-panel',
+        m('.details-panel-heading', m('h2', `Slice Details`)),
+        m('.details-table', this.renderTable(builder)));
     } else {
       return m(
-          '.details-panel',
-          m('.details-panel-heading',
-            m(
-                'h2',
-                `Slice Details`,
-                )));
+        '.details-panel',
+        m('.details-panel-heading',
+          m(
+            'h2',
+            `Slice Details`,
+          )));
     }
   }
 
-  renderCanvas(_ctx: CanvasRenderingContext2D, _size: PanelSize) {}
+  renderCanvas(_ctx: CanvasRenderingContext2D, _size: PanelSize) { }
 
   fillArgs(slice: SliceDetails, builder: TableBuilder) {
     if (slice.argsTree && slice.args) {
@@ -257,25 +245,25 @@ export class ChromeSliceDetailsPanel extends SlicePanel {
       }
 
       if (indent > 0) {
-        renderedRow.push(m('td.no-highlight', {colspan: indent}));
+        renderedRow.push(m('td.no-highlight', { colspan: indent }));
       }
 
       if (row.extraCell === 'whitespace') {
-        renderedRow.push(m('td.no-highlight.padding', {class: 'array-index'}));
+        renderedRow.push(m('td.no-highlight.padding', { class: 'array-index' }));
       } else if (row.extraCell !== 'none') {
-        renderedRow.push(m('td', {class: 'array-index'}, `[${row.extraCell}]`));
+        renderedRow.push(m('td', { class: 'array-index' }, `[${row.extraCell}]`));
       }
 
       if (isTableHeader(row.contents)) {
         renderedRow.push(m(
-            'th',
-            {colspan: keyColumnCount + 1 - row.indentLevel, title: row.tooltip},
-            row.contents.header));
+          'th',
+          { colspan: keyColumnCount + 1 - row.indentLevel, title: row.tooltip },
+          row.contents.header));
       } else {
         renderedRow.push(
-            m('th',
-              {colspan: keyColumnCount - row.indentLevel, title: row.tooltip},
-              row.contents.key));
+          m('th',
+            { colspan: keyColumnCount - row.indentLevel, title: row.tooltip },
+            row.contents.key));
         const value = row.contents.value;
         if (typeof value === 'string') {
           renderedRow.push(m('td.value', value));
@@ -285,21 +273,21 @@ export class ChromeSliceDetailsPanel extends SlicePanel {
           const sliceId = value.sliceId;
           const trackId = value.trackId;
           renderedRow.push(
-              m('td',
-                m('i.material-icons.grey',
-                  {
-                    onclick: () => {
-                      globals.makeSelection(Actions.selectChromeSlice(
-                          {id: sliceId, trackId, table: 'slice'}));
-                      // Ideally we want to have a callback to
-                      // findCurrentSelection after this selection has been
-                      // made. Here we do not have the info for horizontally
-                      // scrolling to ts.
-                      verticalScrollToTrack(trackId, true);
-                    },
-                    title: 'Go to destination slice'
+            m('td',
+              m('i.material-icons.grey',
+                {
+                  onclick: () => {
+                    globals.makeSelection(Actions.selectChromeSlice(
+                      { id: sliceId, trackId, table: 'slice' }));
+                    // Ideally we want to have a callback to
+                    // findCurrentSelection after this selection has been
+                    // made. Here we do not have the info for horizontally
+                    // scrolling to ts.
+                    verticalScrollToTrack(trackId, true);
                   },
-                  'call_made')));
+                  title: 'Go to destination slice'
+                },
+                'call_made')));
         }
       }
 
