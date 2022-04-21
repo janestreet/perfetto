@@ -467,7 +467,7 @@ class TrackDecider {
       summaryTrackId,
       name: MEM_DMA_COUNTER_NAME,
       id,
-      collapsed: true,
+      collapsed: false,
     });
     this.addTrackGroupActions.push(addGroup);
   }
@@ -637,7 +637,7 @@ class TrackDecider {
         summaryTrackId: groupIds.summaryTrackId,
         name: groupName,
         id: groupIds.id,
-        collapsed: true,
+        collapsed: false,
       });
       this.addTrackGroupActions.push(addGroup);
     }
@@ -1423,7 +1423,6 @@ class TrackDecider {
       const threadName = it.threadName;
       const processName = it.processName;
       const hasSched = !!it.hasSched;
-      const hasHeapProfiles = !!it.hasHeapProfiles;
 
       const labels = [];
       if (it.argSetId !== null) {
@@ -1475,7 +1474,7 @@ class TrackDecider {
           // Perf profiling tracks remain collapsed, otherwise we would have too
           // many expanded process tracks for some perf traces, leading to
           // jankyness.
-          collapsed: !hasHeapProfiles,
+          collapsed: false,
         });
 
         this.addTrackGroupActions.push(addTrackGroup);
