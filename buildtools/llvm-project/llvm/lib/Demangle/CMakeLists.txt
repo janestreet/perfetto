@@ -5,6 +5,7 @@ add_llvm_component_library(LLVMDemangle
   MicrosoftDemangleNodes.cpp
   RustDemangle.cpp
   DLangDemangle.cpp
+  OcamlDemangle.cpp
 
   ADDITIONAL_HEADER_DIRS
   "${LLVM_MAIN_INCLUDE_DIR}/llvm/Demangle"
