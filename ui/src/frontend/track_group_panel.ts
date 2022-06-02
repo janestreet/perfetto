@@ -78,6 +78,17 @@ export class TrackGroupPanel extends Panel<Attrs> {
       name = StripPathFromExecutable(name);
     }
 
+    // For strings that end in extra information in brackets, e.g. [pid=555]
+    // this ensures that information is wrapped to the second line for
+    // visibility.
+    const match = (/\[[a-z|()]+=[0-9]+\]/).exec(name);
+    let cmdline = name;
+    let info = '';
+    if (match) {
+      info = name.substring(match.index);
+      cmdline = name.substring(0, match.index);
+    }
+
     // The shell should be highlighted if the current search result is inside
     // this track group.
     let highlightClass = '';
@@ -131,7 +142,9 @@ export class TrackGroupPanel extends Panel<Attrs> {
               this.trackGroupState.collapsed ? EXPAND_DOWN : EXPAND_UP)),
           m('h1.track-title',
             {title: name},
-            name,
+            cmdline,
+            match && m('br'),
+            match && info,
             ('namespace' in this.summaryTrackState.config) &&
                 m('span.chip', 'metric')),
           selection && selection.kind === 'AREA' ?
