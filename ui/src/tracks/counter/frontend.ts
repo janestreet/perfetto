@@ -193,6 +193,15 @@ class CounterTrack extends Track<Config, Data> {
           Math.round(((value - yMin) / yRange) * RECT_HEIGHT);
     };
 
+    // For some reason the first entry in the counter track has lastValues[0] =
+    // 0. This will trigger a later assert if minValues[0] == maxValues[0] but
+    // not minValues[0] == lastValues[0] or it will lead to a track where the
+    // first segment is at y = 0. However if this check can be avoided, that would
+    // be preferred.
+    if (lastValues.length > 0 && lastValues[0] != minValues[0]) {
+      lastValues[0] = minValues[0];
+    }
+
     ctx.beginPath();
     ctx.moveTo(calculateX(data.timestamps[0]), zeroY);
     let lastDrawnY = zeroY;
