@@ -262,16 +262,8 @@ export class SearchManagerImpl {
           0 as utid
         from slice
         join args using(arg_set_id)
-        where string_value glob ${searchLiteral} or key glob ${searchLiteral}
+        where string_value glob ${searchLiteral} or key glob ${searchLiteral} or CAST(COALESCE(int_value, string_value, real_value) AS text) like ${searchLiteral}
       )
-      union all
-      select
-        id as sliceId,
-        ts,
-        'log' as source,
-        0 as sourceId,
-        utid
-      from android_logs where msg glob ${searchLiteral}
       order by ts
     `);
 
