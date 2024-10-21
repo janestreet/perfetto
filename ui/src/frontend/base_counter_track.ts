@@ -511,6 +511,16 @@ export abstract class BaseCounterTrack implements Track {
         Math.round(((value - yMin) / yRange) * effectiveHeight)
       );
     };
+
+    // For some reason the first entry in the counter track has lastValues[0] =
+    // 0. This will trigger a later assert if minValues[0] == maxValues[0] but
+    // not minValues[0] == lastValues[0] or it will lead to a track where the
+    // first segment is at y = 0. However if this check can be avoided, that would
+    // be preferred.
+    if (lastValues.length > 0 && lastValues[0] != minValues[0]) {
+      lastValues[0] = minValues[0];
+    }
+
     let zeroY;
     if (yMin >= 0) {
       zeroY = effectiveHeight + MARGIN_TOP;
