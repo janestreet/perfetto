@@ -73,13 +73,14 @@ export function initAnalytics(
   enable: boolean,
   analyticsId: string | undefined,
 ): AnalyticsInternal {
+  return new NullAnalytics();
   // Skip analytics if the fragment has "testing=1", this is used by UI tests.
   // Skip analytics in embeddedMode since iFrames do not have the same access to
   // local storage.
   // Skip analytics if the user has disabled analytics.
   // Skip analytics if the embedder does not provide an analytics ID.
   if (analyticsId !== undefined && !testingMode && !embeddedMode && enable) {
-    return new AnalyticsImpl(analyticsId);
+    return new AnalyticsImpl(analyticsId!);
   }
   return new NullAnalytics();
 }
