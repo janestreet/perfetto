@@ -46,11 +46,7 @@ import {shareTrace} from './trace_share_utils';
 const GITILES_URL = 'https://github.com/google/perfetto';
 
 function getBugReportUrl(): string {
-  if (AppImpl.instance.isInternalUser) {
-    return 'https://goto.google.com/perfetto-ui-bug';
-  } else {
-    return 'https://github.com/google/perfetto/issues/new';
-  }
+  return 'https://github.com/janestreet/perfetto/issues/new';
 }
 
 const HIRING_BANNER_FLAG = featureFlags.register({

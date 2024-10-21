@@ -31,7 +31,7 @@ const showStatusBarFlag = featureFlags.register({
 });
 // Read the page title set by index.html. This can be overridden at build time
 // via --title (e.g. to distinguish multiple dev server instances).
-const APP_TITLE = document.title || 'Perfetto UI';
+const APP_TITLE = document.title || 'magic-trace';
 
 // This components gets destroyed and recreated every time the current trace
 // changes. Note that in the beginning the current trace is undefined.
