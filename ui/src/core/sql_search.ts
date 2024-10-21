@@ -105,16 +105,8 @@ export async function executeSqlSearch(
         0 as utid
       from slice
       join args using(arg_set_id)
-      where string_value GLOB ${searchLiteral} or key GLOB ${searchLiteral}
+      where string_value GLOB ${searchLiteral} or key GLOB ${searchLiteral} or CAST(COALESCE(int_value, string_value, real_value) AS text) like ${searchLiteral}
     )
-    union all
-    select
-      id as sliceId,
-      ts,
-      'log' as source,
-      0 as sourceId,
-      utid
-    from android_logs where msg GLOB ${searchLiteral}
     order by ts
   `);
 
