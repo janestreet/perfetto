@@ -280,12 +280,8 @@ function getSupportGlobalItems(app: App): SidebarMenuItemInternal[] {
   ];
 }
 
-function getBugReportUrl(app: App): string {
-  if (app.isInternalUser) {
-    return 'https://goto.google.com/perfetto-ui-bug';
-  } else {
-    return 'https://github.com/google/perfetto/issues/new';
-  }
+function getBugReportUrl(_app: App): string {
+  return 'https://github.com/janestreet/perfetto/issues/new';
 }
 
 // Returns trace-specific menu items for the 'support' section.
