@@ -78,11 +78,6 @@ export class HomePage implements m.ClassComponent<PageAttrs> {
         ),
         m(Hints),
       ),
-      m(
-        'a.privacy',
-        {href: 'https://policies.google.com/privacy', target: '_blank'},
-        'Privacy policy',
-      ),
     );
   }
 }
