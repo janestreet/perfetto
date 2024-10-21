@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import m from 'mithril';
-import {channelChanged, getNextChannel, setChannel} from '../core/channels';
 import {Anchor} from '../widgets/anchor';
 import {HotkeyGlyphs} from '../widgets/hotkey_glyphs';
 import {globals} from './globals';
@@ -78,15 +77,6 @@ export class HomePage implements m.ClassComponent<PageAttrs> {
           'Perfetto',
         ),
         m(Hints),
-        m(
-          '.channel-select',
-          m('', 'Feeling adventurous? Try our bleeding edge Canary version'),
-          m('fieldset', mkChan('stable'), mkChan('canary'), m('.highlight')),
-          m(
-            `.home-page-reload${channelChanged() ? '.show' : ''}`,
-            'You need to reload the page for the changes to have effect',
-          ),
-        ),
       ),
       m(
         'a.privacy',
@@ -95,16 +85,4 @@ export class HomePage implements m.ClassComponent<PageAttrs> {
       ),
     );
   }
-}
-
-function mkChan(chan: string) {
-  const checked = getNextChannel() === chan ? '[checked=true]' : '';
-  return [
-    m(`input[type=radio][name=chan][id=chan_${chan}]${checked}`, {
-      onchange: () => {
-        setChannel(chan);
-      },
-    }),
-    m(`label[for=chan_${chan}]`, chan),
-  ];
 }
