@@ -53,11 +53,7 @@ const GITILES_URL =
   'https://android.googlesource.com/platform/external/perfetto';
 
 function getBugReportUrl(): string {
-  if (globals.isInternalUser) {
-    return 'https://goto.google.com/perfetto-ui-bug';
-  } else {
-    return 'https://github.com/google/perfetto/issues/new';
-  }
+  return 'https://github.com/janestreet/perfetto/issues/new';
 }
 
 const HIRING_BANNER_FLAG = featureFlags.register({

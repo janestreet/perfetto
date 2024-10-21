@@ -129,7 +129,7 @@ export class UiMainPerTrace implements m.ClassComponent {
     if (trace === undefined) return;
     assertTrue(trace instanceof TraceImpl);
     this.trace = trace;
-    document.title = `${trace.traceInfo.traceTitle || 'Trace'} - Perfetto UI`;
+    document.title = `${trace.traceInfo.traceTitle || 'Trace'} - magic-trace`;
     this.maybeShowJsonWarning();
 
     // Register the aggregation tabs.
