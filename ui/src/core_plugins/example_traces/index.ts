@@ -17,12 +17,6 @@ import {globals} from '../../frontend/globals';
 import {App} from '../../public/app';
 import {PerfettoPlugin, PluginDescriptor} from '../../public/plugin';
 
-const EXAMPLE_ANDROID_TRACE_URL =
-  'https://storage.googleapis.com/perfetto-misc/example_android_trace_15s';
-
-const EXAMPLE_CHROME_TRACE_URL =
-  'https://storage.googleapis.com/perfetto-misc/chrome_example_wikipedia.perfetto_trace.gz';
-
 function openTraceUrl(url: string): void {
   globals.logging.logEvent('Trace Actions', 'Open example trace');
   AppImpl.instance.openTraceFromUrl(url);

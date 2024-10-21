@@ -52,17 +52,7 @@ import {TraceSource} from '../public/trace_source';
 import {ThreadDesc} from '../public/threads';
 import {Router} from '../core/router';
 
-const METRICS = [
-  'android_ion',
-  'android_lmk',
-  'android_surfaceflinger',
-  'android_batt',
-  'android_other_traces',
-  'chrome_dropped_frames',
-  // TODO(289365196): Reenable:
-  // 'chrome_long_latency',
-  'android_trusty_workqueues',
-];
+const METRICS: Array<string> = [ ];
 const FLAGGED_METRICS: Array<[Flag, string]> = METRICS.map((m) => {
   const id = `forceMetric${m}`;
   let name = m.split('_').join(' ');
