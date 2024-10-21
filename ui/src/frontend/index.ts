@@ -147,38 +147,18 @@ function setupContentSecurityPolicy() {
     }
   }
   const policy = {
-    'default-src': [
-      `'self'`,
-      // Google Tag Manager bootstrap.
-      `'sha256-LirUKeorCU4uRNtNzr8tlB11uy8rzrdmqHCX38JSwHY='`,
-    ],
+    'default-src': [`'self'`],
     'script-src': [
       `'self'`,
       // TODO(b/201596551): this is required for Wasm after crrev.com/c/3179051
       // and should be replaced with 'wasm-unsafe-eval'.
       `'unsafe-eval'`,
-      'https://*.google.com',
-      'https://*.googleusercontent.com',
-      'https://www.googletagmanager.com',
-      'https://*.google-analytics.com',
     ],
     'object-src': ['none'],
-    'connect-src': [
-      `'self'`,
-      'ws://127.0.0.1:8037', // For the adb websocket server.
-      'https:', // Allow any HTTPS; service worker firewall adds granular filtering.
-      'blob:',
-      'data:',
-    ].concat(rpcPolicy),
-    'img-src': [
-      `'self'`,
-      'data:',
-      'blob:',
-      'https://*.google-analytics.com',
-      'https://www.googletagmanager.com',
-      'https://*.googleapis.com',
-    ],
+    'connect-src': [`'self'`, 'blob:', 'data:'].concat(rpcPolicy),
+    'img-src': [`'self'`, 'data:', 'blob:'],
     'style-src': [`'self'`, `'unsafe-inline'`],
+    'navigate-to': ['https://*.magic-trace.org', 'self'],
   };
   const meta = document.createElement('meta');
   meta.httpEquiv = 'Content-Security-Policy';
