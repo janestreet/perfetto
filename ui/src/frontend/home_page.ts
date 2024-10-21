@@ -14,23 +14,14 @@
 
 import './home_page.scss';
 import m from 'mithril';
-import {
-  channelChanged,
-  getCurrentChannel,
-  getNextChannel,
-  setChannel,
-} from '../core/channels';
 import {AppImpl} from '../core/app_impl';
 import {Anchor} from '../widgets/anchor';
-import {Button, ButtonVariant} from '../widgets/button';
-import {Intent} from '../widgets/common';
 import {HotkeyGlyphs, Keycap} from '../widgets/hotkey_glyphs';
 import {Switch} from '../widgets/switch';
 import {assetSrc} from '../base/assets';
 import {Stack} from '../widgets/stack';
 import {Icons} from '../base/semantic_icons';
 import {Icon} from '../widgets/icon';
-import {classNames} from '../base/classnames';
 import {Router} from '../core/router';
 import {
   type KeyboardLayoutMap,
@@ -52,7 +43,6 @@ export class HomePage implements m.ClassComponent {
           'Perfetto',
         ),
         m(Hints),
-        m(ChannelSelect),
       ),
       m(
         Anchor,
@@ -63,62 +53,6 @@ export class HomePage implements m.ClassComponent {
           icon: Icons.ExternalLink,
         },
         'Privacy policy',
-      ),
-    );
-  }
-}
-
-class ChannelSelect implements m.ClassComponent {
-  view() {
-    const showAutopush = getCurrentChannel() === 'autopush';
-    const channels = showAutopush
-      ? ['stable', 'canary', 'autopush']
-      : ['stable', 'canary'];
-
-    return m(
-      `.pf-channel-select`,
-      {
-        className: classNames(
-          showAutopush && 'pf-channel-select--with-autopush',
-        ),
-      },
-      m(
-        '.pf-channel-select__text',
-        'Feeling adventurous? Try our bleeding edge Canary version.',
-      ),
-      m(
-        'fieldset.pf-channel-select__switch',
-        ...channels.map((channel) => {
-          const checked = getNextChannel() === channel ? '[checked=true]' : '';
-          return [
-            m(`input[type=radio][name=chan][id=chan_${channel}]${checked}`, {
-              onchange: () => {
-                setChannel(channel);
-              },
-            }),
-            m(`label[for=chan_${channel}]`, channel),
-          ];
-        }),
-        m('.pf-channel-select__pill'),
-      ),
-      m(
-        '.pf-channel-select__reload-hint',
-        {
-          className: classNames(
-            channelChanged() && 'pf-channel-select__reload-hint--visible',
-          ),
-        },
-        m(
-          '.pf-channel-select__reload-hint-text',
-          'You need to reload the page for the changes to have effect',
-        ),
-        m(Button, {
-          label: 'Reload',
-          icon: 'refresh',
-          variant: ButtonVariant.Filled,
-          intent: Intent.Danger,
-          onclick: () => window.location.reload(),
-        }),
       ),
     );
   }
