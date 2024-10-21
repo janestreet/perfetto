@@ -40,7 +40,7 @@ export class HomePage implements m.ClassComponent {
         m(
           '.pf-home-page__title',
           m(`img.logo[src=${assetSrc('assets/logo-3d.png')}]`),
-          'Perfetto',
+          'magic-trace',
         ),
         m(Hints),
       ),
