@@ -82,7 +82,7 @@ export function renderDetails(
         right: m(Timestamp, {ts: slice.ts}),
       }),
       exists(slice.absTime) &&
-        m(TreeNode, {left: 'Absolute Time', right: slice.absTime}),
+        m(TreeNode, {left: 'Absolute time', right: slice.absTime}),
       m(
         TreeNode,
         {
