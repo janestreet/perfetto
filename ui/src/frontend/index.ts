@@ -120,25 +120,17 @@ function setupContentSecurityPolicy() {
   const policy = {
     'default-src': [
       `'self'`,
-      // Google Tag Manager bootstrap.
-      `'sha256-LirUKeorCU4uRNtNzr8tlB11uy8rzrdmqHCX38JSwHY='`,
     ],
     'script-src': [
       `'self'`,
       // TODO(b/201596551): this is required for Wasm after crrev.com/c/3179051
       // and should be replaced with 'wasm-unsafe-eval'.
       `'unsafe-eval'`,
-      'https://*.google.com',
-      'https://*.googleusercontent.com',
-      'https://www.googletagmanager.com',
-      'https://*.google-analytics.com',
     ],
     'object-src': ['none'],
     'connect-src': [
       `'self'`,
       'ws://127.0.0.1:8037', // For the adb websocket server.
-      'https://*.google-analytics.com',
-      'https://*.googleapis.com', // For Google Cloud Storage fetches.
       'blob:',
       'data:',
     ].concat(rpcPolicy),
@@ -146,12 +138,9 @@ function setupContentSecurityPolicy() {
       `'self'`,
       'data:',
       'blob:',
-      'https://*.google-analytics.com',
-      'https://www.googletagmanager.com',
-      'https://*.googleapis.com',
     ],
     'style-src': [`'self'`, `'unsafe-inline'`],
-    'navigate-to': ['https://*.perfetto.dev', 'self'],
+    'navigate-to': ['https://*.magic-trace.org', 'self'],
   };
   const meta = document.createElement('meta');
   meta.httpEquiv = 'Content-Security-Policy';
@@ -230,17 +219,8 @@ function main() {
     favicon.href = globals.root + 'assets/favicon.png';
   }
 
-  // Load the script to detect if this is a Googler (see comments on globals.ts)
-  // and initialize GA after that (or after a timeout if something goes wrong).
-  const script = document.createElement('script');
-  script.src =
-    'https://storage.cloud.google.com/perfetto-ui-internal/is_internal_user.js';
-  script.async = true;
-  script.onerror = () => globals.logging.initialize();
-  script.onload = () => globals.logging.initialize();
   setTimeout(() => globals.logging.initialize(), 5000);
-
-  document.head.append(script, css);
+  document.head.append(css);
 
   // Route errors to both the UI bugreport dialog and Analytics (if enabled).
   addErrorHandler(maybeShowErrorDialog);
