@@ -284,7 +284,7 @@ export class TrackNode extends TrackNodeContainer {
       uri,
       headless = false,
       sortOrder,
-      collapsed = true,
+      collapsed = false,
       isSummary = false,
     } = args ?? {};
 
