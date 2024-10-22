@@ -202,7 +202,7 @@ function main() {
     name: 'Duration precision',
     description: 'The precision of durations throughout Perfetto.',
     schema: z.enum(DurationPrecision),
-    defaultValue: DurationPrecision.Full,
+    defaultValue: DurationPrecision.HumanReadable,
   });
 
   const analyticsSetting = settingsManager.register({
