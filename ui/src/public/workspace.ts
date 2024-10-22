@@ -138,7 +138,7 @@ export class TrackNode {
       uri,
       headless = false,
       sortOrder,
-      collapsed = true,
+      collapsed = false,
       isSummary = false,
       removable = false,
       subtitle,
