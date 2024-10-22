@@ -148,6 +148,7 @@
 
   &__menubar {
     display: grid;
+    align-items: center;
     grid-template-columns: auto 1fr auto auto;
     grid-template-rows: auto auto;
     grid-template-areas:
