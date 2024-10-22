@@ -724,11 +724,11 @@ export class SliceTrack<T extends RowSchema> implements TrackRenderer {
   }
 
   private getTitleFont(): string {
-    return `${this.sliceLayout.titleSizePx}px Roboto Condensed`;
+    return `${this.sliceLayout.titleSizePx}px`;
   }
 
   private getSubtitleFont(): string {
-    return `${this.sliceLayout.subtitleSizePx}px Roboto Condensed`;
+    return `${this.sliceLayout.subtitleSizePx}px`;
   }
 
   // Creates the mipmap table for efficient slice queries

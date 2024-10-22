@@ -553,7 +553,7 @@ export class CounterTrack implements TrackRenderer {
     }
 
     // Write the Y range labels.
-    ctx.font = '10px Roboto Condensed';
+    ctx.font = '10px';
     ctx.textAlign = 'left';
     ctx.fillStyle = colors.COLOR_TEXT;
 

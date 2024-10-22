@@ -44,7 +44,7 @@ import {hash} from '../base/hash';
 import type {MithrilEvent} from '../base/mithril_utils';
 import {Icons} from '../base/semantic_icons';
 
-const LABEL_FONT_STYLE = '12px Roboto';
+const LABEL_FONT_STYLE = '12px';
 const NODE_HEIGHT = 20;
 const MIN_PIXEL_DISPLAYED = 3;
 const LABEL_PADDING_PX = 5;

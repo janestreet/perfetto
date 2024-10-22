@@ -477,7 +477,7 @@ export class CpuFreqTrack implements TrackRenderer {
       MARGIN_TOP + RECT_HEIGHT,
     );
 
-    ctx.font = '10px Roboto Condensed';
+    ctx.font = '10px';
 
     if (this.hover !== undefined) {
       ctx.fillStyle = this.color.setHSL({s: 45, l: 75}).cssString;

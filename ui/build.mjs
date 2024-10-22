@@ -126,7 +126,7 @@ const RULES = [
   {r: /ui\/src\/open_perfetto_trace\/index.html/, f: copyOpenPerfettoTraceHtml},
   // engine_bench page; no-op without --enable-engine-bench.
   {r: /ui\/src\/engine_bench\/bench\.html$/, f: copyEngineBenchHtml},
-  {r: /ui\/src\/assets\/((.*)[.](png|fxt.gz))/, f: copyAssets},
+  {r: /ui\/src\/assets\/((.*)[.](png|fxt.gz|woff2))/, f: copyAssets},
   {r: /ui\/src\/assets\/(data_explorer\/base-page\.json)/, f: copyAssets},
   {r: /ui\/src\/assets\/(data_explorer\/examples\/(.*)[.]json)/, f: copyAssets},
   {r: /ui\/src\/assets\/(data_explorer\/node_info\/(.*)[.]md)/, f: copyAssets},
