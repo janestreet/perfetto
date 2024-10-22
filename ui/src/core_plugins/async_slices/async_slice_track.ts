@@ -64,7 +64,7 @@ export class AsyncSliceTrack extends NamedSliceTrack<Slice, ThreadSliceRow> {
         id,
         ts,
         dur,
-        layout_depth as depth,
+        (case when dur = 0 then layout_depth + 1 else layout_depth end) as depth,
         ifnull(name, '[null]') as name,
         thread_dur as threadDur
       from experimental_slice_layout
