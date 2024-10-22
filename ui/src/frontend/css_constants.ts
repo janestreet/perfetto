@@ -18,7 +18,7 @@
 export let TRACK_SHELL_WIDTH = 100;
 export let DEFAULT_DETAILS_CONTENT_HEIGHT = 308;
 
-export let FONT_COMPACT = '"Roboto Condensed", sans-serif';
+export let FONT_COMPACT = '"Alright Sans LTV", sans-serif';
 
 export let COLOR_BORDER = 'hotpink';
 export let COLOR_BORDER_SECONDARY = 'hotpink';

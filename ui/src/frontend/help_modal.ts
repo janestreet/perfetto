@@ -28,7 +28,7 @@ import {KeyMapping} from '../base/wasd_key_mapping';
 export function toggleHelp(): void {
   AppImpl.instance.analytics.logEvent('User Actions', 'Show help');
   showModal({
-    title: 'Perfetto Help',
+    title: 'magic-trace Help',
     content: () => m(KeyMappingsHelp),
   });
 }

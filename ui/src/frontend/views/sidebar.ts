@@ -112,6 +112,18 @@ export class Sidebar implements m.ClassComponent<SidebarAttrs> {
   private renderSidebarFooter(app: AppImpl) {
     return m(
       '.pf-sidebar__footer',
+      m(
+        '.js-footer',
+        m(
+          'a',
+          {
+            href: 'https://janestreet.com/join-jane-street/',
+            title: 'Jane Street',
+            target: '_blank',
+          },
+          m(`img.js-logo[src=${assetSrc('assets/LOGO_stacked_white.png')}]`),
+        ),
+      ),
       m(EngineStatusBadge, {app}),
       m(ServiceWorkerStatusBadge, {app}),
       m(

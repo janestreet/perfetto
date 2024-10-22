@@ -66,13 +66,13 @@
     --pf-color-track-summary-expanded-text: #e8eaed;
     --pf-color-timeline-overlay: black;
 
-    // In light mode, the sidebar has a custom distinct blue color scheme.
-    --pf-sidebar-surface: #262f3c;
-    --pf-sidebar-surface-secondary: #19212b;
-    --pf-sidebar-on-surface: #c8c8c8;
-    --pf-sidebar-on-surface-muted: #a0a0a0;
-    --pf-sidebar-border: #4d5765;
-    --pf-sidebar-border-secondary: #404854;
+    // In light mode, the sidebar has a custom distinct purple color scheme.
+    --pf-sidebar-surface: #4b143f;
+    --pf-sidebar-surface-secondary: #21001b;
+    --pf-sidebar-on-surface: #cfcfcf;
+    --pf-sidebar-on-surface-muted: #cfcfcf;
+    --pf-sidebar-border: #6a2b5a;
+    --pf-sidebar-border-secondary: #3a0e30;
   }
 
   &--dark {

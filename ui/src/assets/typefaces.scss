@@ -36,6 +36,20 @@
 }
 
 @font-face {
+  font-family: "Alright Sans LTV";
+  font-style: normal;
+  font-weight: 400;
+  src: url(assets/AlrightSans-Regular.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: "Alright Sans LTV Bold";
+  font-style: normal;
+  font-weight: 700;
+  src: url(assets/AlrightSans-Bold.woff2) format("woff2");
+}
+
+@font-face {
   font-family: "Material Symbols Sharp";
   font-style: normal;
   font-weight: 100 700;

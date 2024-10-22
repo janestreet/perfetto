@@ -28,7 +28,7 @@ export function checkerboard(
   rightPx: number,
 ): void {
   const widthPx = rightPx - leftPx;
-  ctx.font = '12px Roboto Condensed';
+  ctx.font = '12px';
   ctx.fillStyle = COLOR_BACKGROUND_SECONDARY;
   ctx.fillRect(leftPx, 0, widthPx, heightPx);
   ctx.fillStyle = COLOR_TEXT_MUTED;

@@ -317,6 +317,19 @@ li.pf-sidebar__item {
   display: none;
 }
 
+.js-footer {
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  img {
+    width: 110px;
+  }
+  .footnote {
+    font-size: var(--pf-font-size-xs);
+    color: var(--pf-sidebar-on-surface);
+  }
+}
+
 .pf-sidebar__footer {
   padding: 6px;
   display: grid;
