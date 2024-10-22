@@ -36,63 +36,6 @@ select
 from sqlstats, first
 order by started desc`;
 
-const ALL_PROCESSES_QUERY = 'select name, pid from process order by name;';
-
-const CPU_TIME_FOR_PROCESSES = `
-select
-  process.name,
-  sum(dur)/1e9 as cpu_sec
-from sched
-join thread using(utid)
-join process using(upid)
-group by upid
-order by cpu_sec desc
-limit 100;`;
-
-const CYCLES_PER_P_STATE_PER_CPU = `
-select
-  cpu,
-  freq,
-  dur,
-  sum(dur * freq)/1e6 as mcycles
-from (
-  select
-    cpu,
-    value as freq,
-    lead(ts) over (partition by cpu order by ts) - ts as dur
-  from counter
-  inner join cpu_counter_track on counter.track_id = cpu_counter_track.id
-  where name = 'cpufreq'
-) group by cpu, freq
-order by mcycles desc limit 32;`;
-
-const CPU_TIME_BY_CPU_BY_PROCESS = `
-select
-  process.name as process,
-  thread.name as thread,
-  cpu,
-  sum(dur) / 1e9 as cpu_sec
-from sched
-inner join thread using(utid)
-inner join process using(upid)
-group by utid, cpu
-order by cpu_sec desc
-limit 30;`;
-
-const HEAP_GRAPH_BYTES_PER_TYPE = `
-select
-  o.upid,
-  o.graph_sample_ts,
-  c.name,
-  sum(o.self_size) as total_self_size
-from heap_graph_object o join heap_graph_class c on o.type_id = c.id
-group by
- o.upid,
- o.graph_sample_ts,
- c.name
-order by total_self_size desc
-limit 100;`;
-
 class CoreCommandsPlugin implements PerfettoPlugin {
   onActivate(ctx: App) {
     ctx.commands.registerCommand({
@@ -141,61 +84,6 @@ class CoreCommandsPlugin implements PerfettoPlugin {
   }
 
   async onTraceLoad(ctx: Trace): Promise<void> {
-    ctx.commands.registerCommand({
-      id: 'perfetto.CoreCommands#RunQueryAllProcesses',
-      name: 'Run query: All processes',
-      callback: () => {
-        addQueryResultsTab(ctx, {
-          query: ALL_PROCESSES_QUERY,
-          title: 'All Processes',
-        });
-      },
-    });
-
-    ctx.commands.registerCommand({
-      id: 'perfetto.CoreCommands#RunQueryCpuTimeByProcess',
-      name: 'Run query: CPU time by process',
-      callback: () => {
-        addQueryResultsTab(ctx, {
-          query: CPU_TIME_FOR_PROCESSES,
-          title: 'CPU time by process',
-        });
-      },
-    });
-
-    ctx.commands.registerCommand({
-      id: 'perfetto.CoreCommands#RunQueryCyclesByStateByCpu',
-      name: 'Run query: cycles by p-state by CPU',
-      callback: () => {
-        addQueryResultsTab(ctx, {
-          query: CYCLES_PER_P_STATE_PER_CPU,
-          title: 'Cycles by p-state by CPU',
-        });
-      },
-    });
-
-    ctx.commands.registerCommand({
-      id: 'perfetto.CoreCommands#RunQueryCyclesByCpuByProcess',
-      name: 'Run query: CPU Time by CPU by process',
-      callback: () => {
-        addQueryResultsTab(ctx, {
-          query: CPU_TIME_BY_CPU_BY_PROCESS,
-          title: 'CPU time by CPU by process',
-        });
-      },
-    });
-
-    ctx.commands.registerCommand({
-      id: 'perfetto.CoreCommands#RunQueryHeapGraphBytesPerType',
-      name: 'Run query: heap graph bytes per type',
-      callback: () => {
-        addQueryResultsTab(ctx, {
-          query: HEAP_GRAPH_BYTES_PER_TYPE,
-          title: 'Heap graph bytes per type',
-        });
-      },
-    });
-
     ctx.commands.registerCommand({
       id: 'perfetto.CoreCommands#DebugSqlPerformance',
       name: 'Debug SQL performance',
