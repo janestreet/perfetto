@@ -16,7 +16,7 @@
 
 .home-page {
   display: grid;
-  align-items: stretch;
+  align-items: center;
   justify-items: center;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 60px;
@@ -24,14 +24,10 @@
 
   .home-page-center {
     grid-area: center;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+    text-align: center;
 
     .logo {
-      height: 1em;
+      width: var(--track-shell-width);
       margin-right: 1rem;
     }
 
@@ -40,15 +36,14 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      font-size: 60px;
+      font-size: 53px;
       margin: 25px;
       text-align: center;
-      font-family: $pf-font;
-      color: #333;
+      font-family: var(--bold-font);;
+      color: #4b143f;
     }
 
     .channel-select {
-      font-family: $pf-font;
       --chan-width: 100px;
       --chan-num: 2;
 
@@ -97,7 +92,6 @@
         z-index: 2;
         text-transform: uppercase;
         font-size: 16px;
-        font-family: $pf-font;
       }
 
       .highlight {
@@ -133,7 +127,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-family: $pf-font;
 
       .pf-hotkey {
         display: inline-flex;
@@ -166,7 +159,6 @@
     grid-area: footer;
     align-self: center;
     text-decoration: none;
-    font-family: $pf-font;
     color: #333;
   }
 } // .home-page

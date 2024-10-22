@@ -409,18 +409,26 @@ class SidebarFooter implements m.ClassComponent<OptionalTraceAttrs> {
   view({attrs}: m.CVnode<OptionalTraceAttrs>) {
     return m(
       '.sidebar-footer',
-      m(EngineRPCWidget, attrs),
-      m(ServiceWorkerWidget),
-      m(
-        '.version',
+      m('.js-footer',
+        m('a',
+          { href: "https://janestreet.com/join-jane-street/", title: "Jane Street", target: "_blank" },
+          m(`img.js-logo[src=${globals.root}assets/LOGO_stacked_white.png]`)
+         )
+      ),
+      m('.buttons-container',
+        m(EngineRPCWidget, attrs),
+        m(ServiceWorkerWidget),
         m(
-          'a',
-          {
-            href: `${GITILES_URL}/+/${SCM_REVISION}/ui`,
-            title: `Channel: ${getCurrentChannel()}`,
-            target: '_blank',
-          },
-          VERSION,
+          '.version',
+          m(
+            'a',
+            {
+              href: `${GITILES_URL}/+/${SCM_REVISION}/ui`,
+              title: `Channel: ${getCurrentChannel()}`,
+              target: '_blank',
+            },
+            VERSION,
+          ),
         ),
       ),
     );

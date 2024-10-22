@@ -25,7 +25,7 @@ import {Spinner} from './spinner';
 import {TagInput} from './tag_input';
 import {SegmentedButtons} from './segmented_buttons';
 
-const LABEL_FONT_STYLE = '12px Roboto';
+const LABEL_FONT_STYLE = '12px';
 const NODE_HEIGHT = 20;
 const MIN_PIXEL_DISPLAYED = 3;
 const FILTER_COMMON_TEXT = `
