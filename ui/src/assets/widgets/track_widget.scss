@@ -52,6 +52,8 @@
     grid-area: shell;
     background-color: inherit;
     box-shadow: inset 0px -1px 0px 0px var(--track-border-color);
+    display: flex;
+    align-items: center;
 
     &.pf-drag-after {
       box-shadow: inset 0 -6px 3px -3px var(--drag-highlight-color);
@@ -96,10 +98,13 @@
         overflow: hidden;
         margin-left: 2px;
 
-        // The chevron icon used is very thin - take some empty space out of
-        // left & right
         .pf-icon {
-          margin-inline: -0.2em;
+          line-height: 16px;
+          font-size: 24px;
+        }
+
+        &:hover .pf-icon {
+          color: #f5b800;
         }
 
         .pf-track-title-popup {
