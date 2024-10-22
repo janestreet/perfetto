@@ -46,7 +46,6 @@ const IRQ_GROUP = 'IRQs';
 const IRQ_REGEX = new RegExp('^(Irq|SoftIrq) Cpu.*');
 const CHROME_TRACK_REGEX = new RegExp('^Chrome.*|^InputLatency::.*');
 const CHROME_TRACK_GROUP = 'Chrome Global Tracks';
-const MISC_GROUP = 'Misc Global Tracks';
 
 // This plugin is responsible for organizing all the global tracks.
 class GlobalGroupsPlugin implements PerfettoPlugin {
@@ -70,7 +69,7 @@ class GlobalGroupsPlugin implements PerfettoPlugin {
     groupTracksByRegex(trace, TEMPERATURE_REGEX, TEMPERATURE_GROUP);
     groupTracksByRegex(trace, IRQ_REGEX, IRQ_GROUP);
     groupTracksByRegex(trace, CHROME_TRACK_REGEX, CHROME_TRACK_GROUP);
-    groupMiscNonAllowlistedTracks(trace, MISC_GROUP);
+    //groupMiscNonAllowlistedTracks(trace, MISC_GROUP);
 
     // Move groups underneath tracks
     Array.from(trace.workspace.children)
@@ -192,35 +191,6 @@ function groupFrequencyTracks(trace: Trace, groupName: string): void {
     ) {
       group.addChildInOrder(track);
     }
-  }
-
-  if (group.children.length > 0) {
-    trace.workspace.addChildInOrder(group);
-  }
-}
-
-function groupMiscNonAllowlistedTracks(trace: Trace, groupName: string): void {
-  // List of allowlisted track names.
-  const ALLOWLIST_REGEXES = [
-    new RegExp('^Cpu .*$', 'i'),
-    new RegExp('^Gpu .*$', 'i'),
-    new RegExp('^Trace Triggers$'),
-    new RegExp('^Android App Startups$'),
-    new RegExp('^Device State.*$'),
-    new RegExp('^Android logs$'),
-  ];
-
-  const group = new TrackNode({title: groupName, isSummary: true});
-  for (const track of trace.workspace.children) {
-    if (track.hasChildren) continue;
-    let allowlisted = false;
-    for (const regex of ALLOWLIST_REGEXES) {
-      allowlisted = allowlisted || regex.test(track.title);
-    }
-    if (allowlisted) {
-      continue;
-    }
-    group.addChildInOrder(track);
   }
 
   if (group.children.length > 0) {
