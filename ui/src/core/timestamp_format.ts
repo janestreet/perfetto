@@ -57,7 +57,7 @@ export enum DurationPrecision {
 let durationFormatCached: DurationPrecision | undefined;
 
 const DURATION_FORMAT_KEY = 'durationFormat';
-const DEFAULT_DURATION_FORMAT = DurationPrecision.Full;
+const DEFAULT_DURATION_FORMAT = DurationPrecision.HumanReadable;
 
 export function durationPrecision(): DurationPrecision {
   if (durationFormatCached !== undefined) {
