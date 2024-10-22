@@ -32,11 +32,16 @@ function replaceLeadingTrailingSpacesWithNbsp(text: string) {
  */
 export class MiddleEllipsis implements m.ClassComponent<MiddleEllipsisAttrs> {
   view({attrs, children}: m.Vnode<MiddleEllipsisAttrs>): m.Children {
-    const {text, endChars = text.length > 16 ? 10 : 0} = attrs;
-    const trimmed = text.trim();
-    const index = trimmed.length - endChars;
-    const left = trimmed.substring(0, index);
-    const right = trimmed.substring(index);
+    let {text, endChars = text.length > 16 ? 10 : 0} = attrs;
+    text = text.trim();
+
+    // For strings that end in extra information in brackets, e.g. [pid=555], this ensures
+    // that information is always fully visible.
+    const match = (/\[[a-z|()]+=[0-9]+\]/).exec(text);
+    const index = match !== null ? match.index : (text.length - endChars);
+    const left = text.substring(0, index);
+    const right = text.substring(index);
+
     return m(
       '.pf-middle-ellipsis',
       m(
