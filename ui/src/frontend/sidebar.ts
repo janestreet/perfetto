@@ -186,6 +186,18 @@ class SidebarFooter implements m.ClassComponent<OptionalTraceImplAttrs> {
   view({attrs}: m.CVnode<OptionalTraceImplAttrs>) {
     return m(
       '.pf-sidebar__footer',
+      m(
+        '.js-footer',
+        m(
+          'a',
+          {
+            href: 'https://janestreet.com/join-jane-street/',
+            title: 'Jane Street',
+            target: '_blank',
+          },
+          m(`img.js-logo[src=${assetSrc('assets/LOGO_stacked_white.png')}]`),
+        ),
+      ),
       m(EngineRPCWidget, attrs),
       m(ServiceWorkerWidget),
       m(
