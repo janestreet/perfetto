@@ -277,12 +277,12 @@ export abstract class BaseSliceTrack<
 
   private getTitleFont(): string {
     const size = this.sliceLayout.titleSizePx ?? 12;
-    return `${size}px Roboto Condensed`;
+    return `${size}px`;
   }
 
   private getSubtitleFont(): string {
     const size = this.sliceLayout.subtitleSizePx ?? 8;
-    return `${size}px Roboto Condensed`;
+    return `${size}px`;
   }
 
   private getTableName(): string {

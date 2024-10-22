@@ -130,7 +130,7 @@ export class OverviewTimelinePanel implements Panel {
       const tickGen = generateTicks(traceContext, maxMajorTicks, offset);
 
       // Draw time labels
-      ctx.font = '10px Roboto Condensed';
+      ctx.font = '10px';
       ctx.fillStyle = '#999';
       for (const {type, time} of tickGen) {
         const xPos = Math.floor(this.timeScale.timeToPx(time));

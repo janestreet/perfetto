@@ -181,7 +181,7 @@ class KeyMappingsHelp implements m.ClassComponent {
 
 function showHelp() {
   showModal({
-    title: 'Perfetto Help',
+    title: 'magic-trace Help',
     content: () => m(KeyMappingsHelp),
     buttons: [],
   });

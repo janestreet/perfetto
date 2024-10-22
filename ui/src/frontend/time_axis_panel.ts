@@ -40,7 +40,7 @@ export class TimeAxisPanel implements Panel {
   renderCanvas(ctx: CanvasRenderingContext2D, size: Size2D) {
     ctx.fillStyle = '#999';
     ctx.textAlign = 'left';
-    ctx.font = '11px Roboto Condensed';
+    ctx.font = '11px';
 
     this.renderOffsetTimestamp(ctx);
 
@@ -158,7 +158,7 @@ function renderRawTimestamp(
   y: number,
   minWidth: number,
 ) {
-  ctx.font = '11px Roboto Condensed';
+  ctx.font = '11px';
   ctx.fillText(time, x, y, minWidth);
   return ctx.measureText(time).width;
 }
@@ -175,7 +175,7 @@ function renderTimecode(
   minWidth: number,
 ): number {
   const timecode = Time.toTimecode(time);
-  ctx.font = '11px Roboto Condensed';
+  ctx.font = '11px';
 
   const {dhhmmss} = timecode;
   const thinSpace = '\u2009';
@@ -183,7 +183,7 @@ function renderTimecode(
   ctx.fillText(dhhmmss, x, y, minWidth);
   const {width: firstRowWidth} = ctx.measureText(subsec);
 
-  ctx.font = '10.5px Roboto Condensed';
+  ctx.font = '10.5px';
   ctx.fillText(subsec, x, y + 10, minWidth);
   const {width: secondRowWidth} = ctx.measureText(subsec);
 

@@ -13,8 +13,6 @@
 // limitations under the License.
 
 import m from 'mithril';
-import {Anchor} from '../widgets/anchor';
-import {HotkeyGlyphs} from '../widgets/hotkey_glyphs';
 import {globals} from './globals';
 import {PageAttrs} from '../core/router';
 
@@ -22,45 +20,6 @@ export class Hints implements m.ClassComponent {
   view() {
     return m(
       '.home-page-hints',
-      m('.tagline', 'New!'),
-      m(
-        'ul',
-        m(
-          'li',
-          'New updated ',
-          m(
-            Anchor,
-            {
-              href: 'https://perfetto.dev/docs/visualization/perfetto-ui#tabs-v2',
-            },
-            'tabs',
-          ),
-          ' are extensible and user friendly.',
-        ),
-        m(
-          'li',
-          'Use ',
-          m(HotkeyGlyphs, {hotkey: 'W'}),
-          m(HotkeyGlyphs, {hotkey: 'A'}),
-          m(HotkeyGlyphs, {hotkey: 'S'}),
-          m(HotkeyGlyphs, {hotkey: 'D'}),
-          ' to navigate the trace.',
-        ),
-        m(
-          'li',
-          'Try the ',
-          m(
-            Anchor,
-            {
-              href: 'https://perfetto.dev/docs/visualization/perfetto-ui#command-palette',
-            },
-            'command palette,',
-          ),
-          ' press ',
-          m(HotkeyGlyphs, {hotkey: '!Mod+Shift+P'}),
-          '.',
-        ),
-      ),
     );
   }
 }
@@ -73,9 +32,9 @@ export class HomePage implements m.ClassComponent<PageAttrs> {
         '.home-page-center',
         m(
           '.home-page-title',
-          m(`img.logo[src=${globals.root}assets/logo-3d.png]`),
           'magic-trace',
         ),
+        m(`img.logo[src=${globals.root}assets/logo-3d.png]`),
         m(Hints),
       ),
     );

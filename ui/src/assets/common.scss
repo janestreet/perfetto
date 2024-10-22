@@ -18,8 +18,10 @@
 
 :root {
   --sidebar-width: 230px;
-  --topbar-height: 44px;
+  --topbar-height: 48px;
+  --main-font: 'Alright Sans LTV', sans-serif;
   --monospace-font: "Roboto Mono", monospace;
+  --bold-font: 'Alright Sans LTV Bold', sans-serif;
   --track-shell-width: 250px;
   --track-border-color: #00000025;
   --anim-easing: cubic-bezier(0.4, 0, 0.2, 1);
@@ -57,7 +59,7 @@
 }
 
 html {
-  font-family: Roboto, verdana, sans-serif;
+  font-family: var(--main-font);
   height: 100%;
   width: 100%;
 }
@@ -159,7 +161,7 @@ button.close {
   grid-area: alerts;
   background-color: #f2f2f2;
   > div {
-    font-family: "Roboto", sans-serif;
+    font-family: var(--main-font);
     font-weight: 400;
     letter-spacing: 0.25px;
     padding: 1rem;
@@ -376,7 +378,7 @@ header.overview {
   align-content: baseline;
   background-color: hsl(213, 22%, 82%);
   color: hsl(213, 22%, 20%);
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: var(--main-font);
   font-size: 15px;
   font-weight: 400;
   padding: 4px 10px;
