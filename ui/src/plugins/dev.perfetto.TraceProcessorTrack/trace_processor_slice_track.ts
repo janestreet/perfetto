@@ -117,7 +117,10 @@ async function getDataset(
         id: 'id',
         ts: 'ts',
         dur: 'dur',
-        depth: 'depth',
+        // Bodge: instant events (dur=0) get an incorrect depth from the slice
+        // table, leading to visual overlap with surrounding non-instant slices.
+        // Bump them onto a dedicated row.
+        depth: '(case when dur = 0 then depth + 1 else depth end)',
         name: 'name',
         thread_dur: 'thread_dur',
         track_id: 'track_id',
