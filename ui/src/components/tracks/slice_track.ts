@@ -61,7 +61,7 @@ import {
   type DisposableSqlEntity,
 } from '../../trace_processor/sql_utils';
 import {checkerboardExcept} from '../checkerboard';
-import {getColorForSlice} from '../colorizer';
+import {getColorForSlice, SEARCH_COLOR} from '../colorizer';
 import {formatDuration} from '../time_utils';
 import {BufferedBounds} from './buffered_bounds';
 import {CHUNKED_TASK_BACKGROUND_PRIORITY} from './feature_flags';
@@ -496,6 +496,8 @@ export class SliceTrack<T extends RowSchema> implements TrackRenderer {
     const colors = new Uint32Array(count);
     let selectedIdx = -1;
 
+    const searchSliceIdSet = this.trace.search.searchResults?.sliceIdSet;
+
     for (let j = 0; j < count; j++) {
       const slice = slices[j];
       const colorVariant = colorVariants[j];
@@ -506,7 +508,10 @@ export class SliceTrack<T extends RowSchema> implements TrackRenderer {
           : colorVariant === ColorVariant.VARIANT
             ? cs.variant
             : cs.disabled;
-      colors[j] = color.rgba;
+      colors[j] =
+        searchSliceIdSet !== undefined && searchSliceIdSet.has(slice.id)
+          ? SEARCH_COLOR.rgba
+          : color.rgba;
 
       // Track selected slice index
       if (selectedId !== undefined && slice.id === selectedId) {

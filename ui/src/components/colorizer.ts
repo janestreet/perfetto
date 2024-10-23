@@ -70,6 +70,9 @@ export const WHITE_COLOR = new HSLColor([0, 0, 100]);
 export const BLACK_COLOR = new HSLColor([0, 0, 0]);
 export const GRAY_COLOR = new HSLColor([0, 0, 50]).setAlpha(0.5);
 
+// Based on the CSS color for .flash but lower lightness
+export const SEARCH_COLOR: HSLColor = new HSLColor('#ffd000');
+
 const MD_PALETTE: ColorScheme[] = MD_PALETTE_RAW.map((color): ColorScheme => {
   const base = color.desaturate(20);
   const variant = base.desaturate(20).setAlpha(0.8);

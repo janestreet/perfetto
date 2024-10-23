@@ -76,6 +76,11 @@ export interface SearchProvider {
   getSearchFilter(searchTerm: string): Promise<FilterExpression | undefined>;
 }
 
+export interface SearchResultsSummary {
+  readonly sliceIdSet: ReadonlySet<number>;
+}
+
 export interface SearchManager {
   registerSearchProvider(provider: SearchProvider): void;
+  readonly searchResults: SearchResultsSummary | undefined;
 }
