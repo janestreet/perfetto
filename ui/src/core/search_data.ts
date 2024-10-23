@@ -25,6 +25,7 @@ export interface CurrentSearchResults {
   tses: BigInt64Array;
   utids: Float64Array;
   trackUris: string[];
+  sliceIdSet: Set<number>;
   sources: SearchSource[];
   totalResults: number;
 }

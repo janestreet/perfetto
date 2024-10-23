@@ -20,7 +20,7 @@ import {Actions} from '../common/actions';
 import {drawIncompleteSlice, drawTrackHoverTooltip} from '../base/canvas_utils';
 import {cropText} from '../base/string_utils';
 import {colorCompare} from '../public/color';
-import {UNEXPECTED_PINK} from '../core/colorizer';
+import {SEARCH_COLOR, UNEXPECTED_PINK} from '../core/colorizer';
 import {TrackEventDetails} from '../public/selection';
 import {featureFlags} from '../core/feature_flags';
 import {raf} from '../core/raf_scheduler';
@@ -465,6 +465,11 @@ export abstract class BaseSliceTrack<
       }
     }
 
+    let searchSliceIdSet;
+    if (globals.searchManager.searchResults !== undefined) {
+      searchSliceIdSet = globals.searchManager.searchResults.sliceIdSet;
+    }
+
     // Second pass: fill slices by color.
     const vizSlicesByColor = vizSlices.slice();
     vizSlicesByColor.sort((a, b) =>
@@ -479,6 +484,11 @@ export abstract class BaseSliceTrack<
         lastColor = color;
         ctx.fillStyle = color;
       }
+
+      if (searchSliceIdSet !== undefined && searchSliceIdSet.has(slice.id)) {
+        ctx.fillStyle = SEARCH_COLOR;
+      }
+
       const y = padding + slice.depth * (sliceHeight + rowSpacing);
       if (slice.flags & SLICE_FLAGS_INSTANT) {
         this.drawChevron(ctx, slice.x, y, sliceHeight);
