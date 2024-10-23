@@ -14,12 +14,14 @@
 
 import {assetSrc} from '../../base/assets';
 import {AppImpl} from '../../core/app_impl';
+import {Router} from '../../core/router';
 import type {App} from '../../public/app';
 import type {PerfettoPlugin} from '../../public/plugin';
 
 function openTraceUrl(app: App, url: string): void {
   app.analytics.logEvent('Trace Actions', 'Open example trace');
   AppImpl.instance.openTraceFromUrl(url);
+  Router.navigate('#!/viewer');
 }
 
 export default class implements PerfettoPlugin {
