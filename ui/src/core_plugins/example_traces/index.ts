@@ -13,12 +13,15 @@
 // limitations under the License.
 
 import {AppImpl} from '../../core/app_impl';
+import {Router} from '../../core/router';
+import {globals} from '../../frontend/globals';
 import {App} from '../../public/app';
 import {PerfettoPlugin, PluginDescriptor} from '../../public/plugin';
 
 function openTraceUrl(app: App, url: string): void {
   app.analytics.logEvent('Trace Actions', 'Open example trace');
   AppImpl.instance.openTraceFromUrl(url);
+  Router.navigate('#!/viewer');
 }
 
 class ExampleTracesPlugin implements PerfettoPlugin {
