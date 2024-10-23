@@ -22,7 +22,11 @@ import {colorForCpu} from '../../components/colorizer';
 import {TraceImpl} from '../../core/trace_impl';
 import {TimestampFormat} from '../../public/timeline';
 import {VirtualOverlayCanvas} from '../../widgets/virtual_overlay_canvas';
-import {COLOR_TEXT_MUTED, FONT_COMPACT, COLOR_BORDER} from '../../frontend/css_constants';
+import {
+  COLOR_TEXT_MUTED,
+  FONT_COMPACT,
+  COLOR_BORDER,
+} from '../../frontend/css_constants';
 import {
   generateTicks,
   getMaxMajorTicks,
@@ -212,9 +216,17 @@ function renderTimestamp(
   switch (fmt) {
     case TimestampFormat.UTC:
     case TimestampFormat.TraceTz:
-    case TimestampFormat.Timecode:
     case TimestampFormat.CustomTimezone:
       renderTimecode(ctx, time, x, y, minWidth);
+      break;
+    case TimestampFormat.Timecode:
+      if (time < 1000n) {
+        ctx.fillText(Time.formatNanoseconds(time), x, y, minWidth);
+      } else if (time < 1000000n) {
+        ctx.fillText(Time.formatMicroseconds(time), x, y, minWidth);
+      } else {
+        ctx.fillText(Time.formatMilliseconds(time), x, y, minWidth);
+      }
       break;
     case TimestampFormat.TraceNs:
       ctx.fillText(time.toString(), x, y, minWidth);

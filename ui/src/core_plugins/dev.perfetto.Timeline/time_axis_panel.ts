@@ -165,8 +165,33 @@ export class TimeAxisPanel {
       case TimestampFormat.UTC:
       case TimestampFormat.CustomTimezone:
       case TimestampFormat.TraceTz:
-      case TimestampFormat.Timecode:
         return renderTimecode(ctx, time, x, y, minWidth);
+      case TimestampFormat.Timecode:
+        if (time < 1000n) {
+          return renderRawTimestamp(
+            ctx,
+            Time.formatNanoseconds(time),
+            x,
+            y,
+            minWidth,
+          );
+        } else if (time < 1000000n) {
+          return renderRawTimestamp(
+            ctx,
+            Time.formatMicroseconds(time),
+            x,
+            y,
+            minWidth,
+          );
+        } else {
+          return renderRawTimestamp(
+            ctx,
+            Time.formatMilliseconds(time),
+            x,
+            y,
+            minWidth,
+          );
+        }
       case TimestampFormat.TraceNs:
         return renderRawTimestamp(ctx, time.toString(), x, y, minWidth);
       case TimestampFormat.TraceNsLocale:
