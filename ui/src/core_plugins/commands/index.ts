@@ -138,22 +138,6 @@ class CoreCommandsPlugin implements PerfettoPlugin {
       group: 'navigation',
       icon: 'folder_open',
     });
-
-    const OPEN_LEGACY_TRACE_COMMAND_ID =
-      'perfetto.CoreCommands#openTraceInLegacyUi';
-    ctx.commands.registerCommand({
-      id: OPEN_LEGACY_TRACE_COMMAND_ID,
-      name: 'Open with legacy UI',
-      callback: () => {
-        input.dataset['useCatapultLegacyUi'] = '1';
-        input.click();
-      },
-    });
-    ctx.sidebar.addMenuItem({
-      commandId: OPEN_LEGACY_TRACE_COMMAND_ID,
-      group: 'navigation',
-      icon: 'filter_none',
-    });
   }
 
   async onTraceLoad(ctx: Trace): Promise<void> {

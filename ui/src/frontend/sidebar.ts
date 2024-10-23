@@ -13,23 +13,19 @@
 // limitations under the License.
 
 import m from 'mithril';
-import {assertExists, assertTrue} from '../base/logging';
+import {assertExists} from '../base/logging';
 import {isString} from '../base/object_utils';
 import {getCurrentChannel} from '../core/channels';
-import {TRACE_SUFFIX} from '../common/constants';
 import {ConversionJobStatus} from '../common/conversion_jobs';
 import {
-  disableMetatracingAndGetTrace,
-  enableMetatracing,
   isMetatracingEnabled,
 } from '../core/metatracing';
-import {Engine, EngineMode} from '../trace_processor/engine';
+import {EngineMode} from '../trace_processor/engine';
 import {featureFlags} from '../core/feature_flags';
 import {raf} from '../core/raf_scheduler';
 import {SCM_REVISION, VERSION} from '../gen/perfetto_version';
 import {showModal} from '../widgets/modal';
 import {Animation} from './animation';
-import {downloadData, downloadUrl} from './download_utils';
 import {globals} from './globals';
 import {toggleHelp} from './help_modal';
 import {
@@ -38,11 +34,6 @@ import {
   isTraceLoaded,
   shareTrace,
 } from './trace_attrs';
-import {
-  convertTraceToJsonAndDownload,
-  convertTraceToSystraceAndDownload,
-} from './trace_converter';
-import {openInOldUIWithSizeCheck} from './legacy_trace_viewer';
 import {formatHotkey} from '../base/hotkeys';
 import {SidebarMenuItem} from '../public/sidebar';
 import {AppImpl} from '../core/app_impl';
@@ -75,20 +66,6 @@ const PLUGINS_PAGE_IN_NAV_FLAG = featureFlags.register({
   name: 'Show plugins page',
   description: 'Show a link to the plugins page in the side bar.',
   defaultValue: false,
-});
-
-const INSIGHTS_PAGE_IN_NAV_FLAG = featureFlags.register({
-  id: 'showInsightsPageInNav',
-  name: 'Show insights page',
-  description: 'Show a link to the insights page in the side bar.',
-  defaultValue: false,
-});
-
-const VIZ_PAGE_IN_NAV_FLAG = featureFlags.register({
-  id: 'showVizPageInNav',
-  name: 'Show viz page',
-  description: 'Show a link to the viz page in the side bar.',
-  defaultValue: true,
 });
 
 export interface OptionalTraceAttrs {
@@ -149,7 +126,7 @@ function insertSidebarMenuitems(
     });
 }
 
-function getSections(trace?: Trace): Section[] {
+function getSections(_?: Trace): Section[] {
   return [
     {
       title: 'Navigation',
@@ -157,7 +134,6 @@ function getSections(trace?: Trace): Section[] {
       expanded: true,
       items: [
         ...insertSidebarMenuitems('navigation'),
-        {t: 'Record new trace', a: navigateRecord, i: 'fiber_smart_record'},
         {
           t: 'Widgets',
           a: navigateWidgets,
@@ -190,64 +166,7 @@ function getSections(trace?: Trace): Section[] {
             globals.getConversionJobStatus('create_permalink') ===
             ConversionJobStatus.InProgress,
         },
-        {
-          t: 'Download',
-          a: (e: Event) => trace && downloadTrace(e, trace),
-          i: 'file_download',
-          checkDownloadDisabled: true,
-        },
         {t: 'Query (SQL)', a: navigateQuery, i: 'database'},
-        {
-          t: 'Insights',
-          a: navigateInsights,
-          i: 'insights',
-          isVisible: () => INSIGHTS_PAGE_IN_NAV_FLAG.get(),
-        },
-        {
-          t: 'Viz',
-          a: navigateViz,
-          i: 'area_chart',
-          isVisible: () => VIZ_PAGE_IN_NAV_FLAG.get(),
-        },
-        {t: 'Metrics', a: navigateMetrics, i: 'speed'},
-        {t: 'Info and stats', a: navigateInfo, i: 'info'},
-      ],
-    },
-
-    {
-      title: 'Convert trace',
-      summary: 'Convert to other formats',
-      expanded: true,
-      hideIfNoTraceLoaded: true,
-      items: [
-        {
-          t: 'Switch to legacy UI',
-          a: openCurrentTraceWithOldUI,
-          i: 'filter_none',
-          isPending: () =>
-            globals.getConversionJobStatus('open_in_legacy') ===
-            ConversionJobStatus.InProgress,
-        },
-        {
-          t: 'Convert to .json',
-          a: convertTraceToJson,
-          i: 'file_download',
-          isPending: () =>
-            globals.getConversionJobStatus('convert_json') ===
-            ConversionJobStatus.InProgress,
-          checkDownloadDisabled: true,
-        },
-
-        {
-          t: 'Convert to .systrace',
-          a: convertTraceToSystrace,
-          i: 'file_download',
-          isVisible: () => Boolean(trace?.traceInfo.hasFtrace),
-          isPending: () =>
-            globals.getConversionJobStatus('convert_systrace') ===
-            ConversionJobStatus.InProgress,
-          checkDownloadDisabled: true,
-        },
       ],
     },
 
@@ -264,29 +183,17 @@ function getSections(trace?: Trace): Section[] {
       summary: 'Documentation & Bugs',
       items: [
         {t: 'Keyboard shortcuts', a: openHelp, i: 'help'},
-        {t: 'Documentation', a: 'https://perfetto.dev/docs', i: 'find_in_page'},
-        {t: 'Flags', a: navigateFlags, i: 'emoji_flags'},
+        {t: 'Documentation', a: 'https://github.com/janestreet/magic-trace', i: 'find_in_page'},
         {
           t: 'Report a bug',
           a: getBugReportUrl(),
           i: 'bug_report',
         },
-        ...(trace
-          ? [
-              {
-                t: 'Record metatrace',
-                a: (e: Event) => recordMetatrace(e, trace.engine),
-                i: 'fiber_smart_record',
-                checkMetatracingDisabled: true,
-              },
-              {
-                t: 'Finalise metatrace',
-                a: (e: Event) => finaliseMetatrace(e, trace.engine),
-                i: 'file_download',
-                checkMetatracingEnabled: true,
-              },
-            ]
-          : []),
+        {
+          t: 'About',
+          a: 'https://github.com/janestreet/magic-trace/wiki/About-the-UI',
+          i: 'info'
+        },
       ],
     },
   ];
@@ -331,56 +238,6 @@ export async function getCurrentTrace(): Promise<Blob> {
   }
 }
 
-function openCurrentTraceWithOldUI(e: Event) {
-  e.preventDefault();
-  assertTrue(isTraceLoaded());
-  AppImpl.instance.analytics.logEvent(
-    'Trace Actions',
-    'Open current trace in legacy UI',
-  );
-  if (!isTraceLoaded()) return;
-  getCurrentTrace()
-    .then((file) => {
-      openInOldUIWithSizeCheck(file);
-    })
-    .catch((error) => {
-      throw new Error(`Failed to get current trace ${error}`);
-    });
-}
-
-function convertTraceToSystrace(e: Event) {
-  e.preventDefault();
-  assertTrue(isTraceLoaded());
-  AppImpl.instance.analytics.logEvent('Trace Actions', 'Convert to .systrace');
-  if (!isTraceLoaded()) return;
-  getCurrentTrace()
-    .then((file) => {
-      convertTraceToSystraceAndDownload(file);
-    })
-    .catch((error) => {
-      throw new Error(`Failed to get current trace ${error}`);
-    });
-}
-
-function convertTraceToJson(e: Event) {
-  e.preventDefault();
-  assertTrue(isTraceLoaded());
-  AppImpl.instance.analytics.logEvent('Trace Actions', 'Convert to .json');
-  if (!isTraceLoaded()) return;
-  getCurrentTrace()
-    .then((file) => {
-      convertTraceToJsonAndDownload(file);
-    })
-    .catch((error) => {
-      throw new Error(`Failed to get current trace ${error}`);
-    });
-}
-
-function navigateRecord(e: Event) {
-  e.preventDefault();
-  Router.navigate('#!/record');
-}
-
 function navigateWidgets(e: Event) {
   e.preventDefault();
   Router.navigate('#!/widgets');
@@ -396,31 +253,6 @@ function navigateQuery(e: Event) {
   Router.navigate('#!/query');
 }
 
-function navigateInsights(e: Event) {
-  e.preventDefault();
-  Router.navigate('#!/insights');
-}
-
-function navigateViz(e: Event) {
-  e.preventDefault();
-  Router.navigate('#!/viz');
-}
-
-function navigateFlags(e: Event) {
-  e.preventDefault();
-  Router.navigate('#!/flags');
-}
-
-function navigateMetrics(e: Event) {
-  e.preventDefault();
-  Router.navigate('#!/metrics');
-}
-
-function navigateInfo(e: Event) {
-  e.preventDefault();
-  Router.navigate('#!/info');
-}
-
 function navigateViewer(e: Event) {
   e.preventDefault();
   Router.navigate('#!/viewer');
@@ -431,38 +263,6 @@ function handleShareTrace(e: Event) {
   shareTrace();
 }
 
-function downloadTrace(e: Event, trace: Trace) {
-  e.preventDefault();
-  if (!isDownloadable() || !isTraceLoaded()) return;
-  AppImpl.instance.analytics.logEvent('Trace Actions', 'Download trace');
-
-  let url = '';
-  let fileName = `trace${TRACE_SUFFIX}`;
-  const src = trace.traceInfo.source;
-  if (src.type === 'URL') {
-    url = src.url;
-    fileName = url.split('/').slice(-1)[0];
-  } else if (src.type === 'ARRAY_BUFFER') {
-    const blob = new Blob([src.buffer], {type: 'application/octet-stream'});
-    const inputFileName = window.prompt(
-      'Please enter a name for your file or leave blank',
-    );
-    if (inputFileName) {
-      fileName = `${inputFileName}.perfetto_trace.gz`;
-    } else if (src.fileName) {
-      fileName = src.fileName;
-    }
-    url = URL.createObjectURL(blob);
-  } else if (src.type === 'FILE') {
-    const file = src.file;
-    url = URL.createObjectURL(file);
-    fileName = file.name;
-  } else {
-    throw new Error(`Download from ${JSON.stringify(src)} is not supported`);
-  }
-  downloadUrl(fileName, url);
-}
-
 function highPrecisionTimersAvailable(): boolean {
   // High precision timers are available either when the page is cross-origin
   // isolated or when the trace processor is a standalone binary.
@@ -470,58 +270,6 @@ function highPrecisionTimersAvailable(): boolean {
     window.crossOriginIsolated ||
     AppImpl.instance.trace?.engine.mode === 'HTTP_RPC'
   );
-}
-
-function recordMetatrace(e: Event, engine: Engine) {
-  e.preventDefault();
-  AppImpl.instance.analytics.logEvent('Trace Actions', 'Record metatrace');
-
-  if (!highPrecisionTimersAvailable()) {
-    const PROMPT = `High-precision timers are not available to WASM trace processor yet.
-
-Modern browsers restrict high-precision timers to cross-origin-isolated pages.
-As Perfetto UI needs to open traces via postMessage, it can't be cross-origin
-isolated until browsers ship support for
-'Cross-origin-opener-policy: restrict-properties'.
-
-Do you still want to record a metatrace?
-Note that events under timer precision (1ms) will dropped.
-Alternatively, connect to a trace_processor_shell --httpd instance.
-`;
-    showModal({
-      title: `Trace processor doesn't have high-precision timers`,
-      content: m('.modal-pre', PROMPT),
-      buttons: [
-        {
-          text: 'YES, record metatrace',
-          primary: true,
-          action: () => {
-            enableMetatracing();
-            engine.enableMetatrace();
-          },
-        },
-        {
-          text: 'NO, cancel',
-        },
-      ],
-    });
-  } else {
-    engine.enableMetatrace();
-  }
-}
-
-async function finaliseMetatrace(e: Event, engine: Engine) {
-  e.preventDefault();
-  AppImpl.instance.analytics.logEvent('Trace Actions', 'Finalise metatrace');
-
-  const jsEvents = disableMetatracingAndGetTrace();
-
-  const result = await engine.stopAndGetMetatrace();
-  if (result.error.length !== 0) {
-    throw new Error(`Failed to read metatrace: ${result.error}`);
-  }
-
-  downloadData('metatrace', result.metatrace, jsEvents);
 }
 
 class EngineRPCWidget implements m.ClassComponent<OptionalTraceAttrs> {
