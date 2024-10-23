@@ -155,7 +155,7 @@ export class UiMainPerTrace implements m.ClassComponent {
         name: 'Set timestamp and duration format',
         callback: async () => {
           const options: PromptOption[] = [
-            {key: TimestampFormat.Timecode, displayName: 'Timecode'},
+            {key: TimestampFormat.Timecode, displayName: 'Human-readable'},
             {key: TimestampFormat.UTC, displayName: 'Realtime (UTC)'},
             {
               key: TimestampFormat.TraceTz,

@@ -123,7 +123,7 @@ export interface Tick {
   time: time;
 }
 
-export const MIN_PX_PER_STEP = 120;
+export const MIN_PX_PER_STEP = 70;
 export function getMaxMajorTicks(width: number) {
   return Math.max(1, Math.floor(width / MIN_PX_PER_STEP));
 }

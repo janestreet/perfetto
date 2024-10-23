@@ -120,7 +120,6 @@ function renderTimestamp(
   switch (fmt) {
     case TimestampFormat.UTC:
     case TimestampFormat.TraceTz:
-    case TimestampFormat.Timecode:
       return renderTimecode(ctx, time, x, y, minWidth);
     case TimestampFormat.TraceNs:
       return renderRawTimestamp(ctx, time.toString(), x, y, minWidth);
@@ -128,6 +127,32 @@ function renderTimestamp(
       return renderRawTimestamp(ctx, time.toLocaleString(), x, y, minWidth);
     case TimestampFormat.Seconds:
       return renderRawTimestamp(ctx, Time.formatSeconds(time), x, y, minWidth);
+    case TimestampFormat.Timecode:
+      if (time < 1000) {
+        return renderRawTimestamp(
+          ctx,
+          Time.formatNanoseconds(time),
+          x,
+          y,
+          minWidth,
+        );
+      } else if (time < 1000000) {
+        return renderRawTimestamp(
+          ctx,
+          Time.formatMicroseconds(time),
+          x,
+          y,
+          minWidth,
+        );
+      } else {
+        return renderRawTimestamp(
+          ctx,
+          Time.formatMilliseconds(time),
+          x,
+          y,
+          minWidth,
+        );
+      }
     case TimestampFormat.Milliseoncds:
       return renderRawTimestamp(
         ctx,
