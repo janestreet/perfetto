@@ -17,7 +17,6 @@ import m from 'mithril';
 import {assetSrc} from '../../base/assets';
 import {AppImpl} from '../../core/app_impl';
 import {getCurrentChannel} from '../../core/channels';
-import {isMetatracingEnabled} from '../../core/metatracing';
 import {raf} from '../../core/raf_scheduler';
 import type {SidebarMenuItemInternal} from '../../core/sidebar_manager';
 import type {TraceImpl} from '../../core/trace_impl';
@@ -27,12 +26,6 @@ import {SIDEBAR_SECTIONS, type SidebarSections} from '../../public/sidebar';
 import {Icon} from '../../widgets/icon';
 import {Animation} from '../animation';
 import {toggleHelp} from '../help_modal';
-import {
-  convertTraceToJson,
-  convertTraceToSystrace,
-  downloadTrace,
-  toggleMetatrace,
-} from '../trace_actions';
 import {shareTrace} from '../trace_share_utils';
 import {EngineStatusBadge} from './engine_status_badge';
 import {HiringBanner, shouldShowHiringBanner} from './hiring_banner';
@@ -193,9 +186,6 @@ export class Sidebar implements m.ClassComponent<SidebarAttrs> {
 // Returns menu items for the 'current_trace' section.
 function getCurrentTraceItems(trace: TraceImpl): SidebarMenuItemInternal[] {
   const items: SidebarMenuItemInternal[] = [];
-  const downloadDisabled = trace.traceInfo.downloadable
-    ? false
-    : 'Cannot download external trace';
 
   if (AppImpl.instance.isInternalUser) {
     items.push({
@@ -208,47 +198,12 @@ function getCurrentTraceItems(trace: TraceImpl): SidebarMenuItemInternal[] {
     });
   }
 
-  items.push({
-    id: 'perfetto.DownloadTrace',
-    section: 'current_trace',
-    sortOrder: 51,
-    text: 'Download',
-    action: () => downloadTrace(trace),
-    icon: 'file_download',
-    disabled: downloadDisabled,
-  });
-
   return items;
 }
 
 // Returns menu items for the 'convert_trace' section.
-function getConvertTraceItems(trace: TraceImpl): SidebarMenuItemInternal[] {
-  const items: SidebarMenuItemInternal[] = [];
-  const downloadDisabled = trace.traceInfo.downloadable
-    ? false
-    : 'Cannot download external trace';
-
-  items.push({
-    id: 'perfetto.ConvertToJson',
-    section: 'convert_trace',
-    text: 'Convert to .json',
-    action: async () => await convertTraceToJson(trace),
-    icon: 'file_download',
-    disabled: downloadDisabled,
-  });
-
-  if (trace.traceInfo.hasFtrace) {
-    items.push({
-      id: 'perfetto.ConvertToSystrace',
-      section: 'convert_trace',
-      text: 'Convert to .systrace',
-      action: async () => await convertTraceToSystrace(trace),
-      icon: 'file_download',
-      disabled: downloadDisabled,
-    });
-  }
-
-  return items;
+function getConvertTraceItems(_trace: TraceImpl): SidebarMenuItemInternal[] {
+  return [];
 }
 
 // Returns global menu items for the 'support' section (always visible).
@@ -267,7 +222,7 @@ function getSupportGlobalItems(app: App): SidebarMenuItemInternal[] {
       id: 'perfetto.Documentation',
       section: 'support',
       text: 'Documentation',
-      href: 'https://perfetto.dev/docs',
+      href: 'https://github.com/janestreet/magic-trace',
       icon: 'find_in_page',
     },
     {
@@ -278,6 +233,14 @@ function getSupportGlobalItems(app: App): SidebarMenuItemInternal[] {
       href: getBugReportUrl(app),
       icon: 'bug_report',
     },
+    {
+      id: 'magic-trace.About',
+      section: 'support',
+      sortOrder: 5,
+      text: 'About',
+      href: 'https://github.com/janestreet/magic-trace/wiki/About-the-UI',
+      icon: 'info',
+    },
   ];
 }
 
@@ -286,16 +249,6 @@ function getBugReportUrl(_app: App): string {
 }
 
 // Returns trace-specific menu items for the 'support' section.
-function getSupportTraceItems(trace: TraceImpl): SidebarMenuItemInternal[] {
-  return [
-    {
-      id: 'perfetto.Metatrace',
-      section: 'support',
-      sortOrder: 5,
-      text: () =>
-        isMetatracingEnabled() ? 'Finalize metatrace' : 'Record metatrace',
-      action: () => toggleMetatrace(trace.engine),
-      icon: () => (isMetatracingEnabled() ? 'download' : 'fiber_smart_record'),
-    },
-  ];
+function getSupportTraceItems(_trace: TraceImpl): SidebarMenuItemInternal[] {
+  return [];
 }
