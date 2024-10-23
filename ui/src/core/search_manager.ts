@@ -37,6 +37,7 @@ export interface SearchResults {
   tses: BigInt64Array;
   utids: Float64Array;
   trackUris: string[];
+  sliceIdSet: Set<number>;
   sources: SearchSource[];
   totalResults: number;
 }
@@ -273,6 +274,7 @@ export class SearchManagerImpl {
       utids: new Float64Array(0),
       sources: [],
       trackUris: [],
+      sliceIdSet: new Set(),
       totalResults: 0,
     };
 
@@ -330,6 +332,7 @@ export class SearchManagerImpl {
       searchResults.eventIds[i] = it.sliceId;
       searchResults.tses[i] = it.ts;
       searchResults.utids[i] = it.utid;
+      searchResults.sliceIdSet.add(it.sliceId);
     }
 
     if (generation !== this._searchGeneration) {
