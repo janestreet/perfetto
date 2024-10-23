@@ -117,6 +117,7 @@ export async function executeSqlSearch(
     utids: new Float64Array(0),
     sources: [],
     trackUris: [],
+    sliceIdSet: new Set(),
     totalResults: 0,
   };
 
@@ -155,6 +156,7 @@ export async function executeSqlSearch(
     searchResults.eventIds[i] = it.sliceId;
     searchResults.tses[i] = it.ts;
     searchResults.utids[i] = it.utid;
+    searchResults.sliceIdSet.add(it.sliceId);
   }
 
   return searchResults;
