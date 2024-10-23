@@ -25,6 +25,7 @@ import {
   openFileWithLegacyTraceViewer,
 } from '../../frontend/legacy_trace_viewer';
 import {AppImpl} from '../../core/app_impl';
+import {Router} from '../../core/router';
 import {addQueryResultsTab} from '../../public/lib/query_table/query_result_tab';
 
 const SQL_STATS = `
@@ -73,6 +74,7 @@ class CoreCommandsPlugin implements PerfettoPlugin {
       callback: () => {
         delete input.dataset['useCatapultLegacyUi'];
         input.click();
+        Router.navigate('#!/viewer');
       },
       defaultHotkey: '!Mod+O',
     });
