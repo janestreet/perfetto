@@ -42,6 +42,7 @@ interface SearchResults {
   utids: Float64Array;
   trackUris: string[];
   sources: SearchSource[];
+  sliceIdSet: Set<number>;
   totalResults: number;
 }
 
@@ -161,6 +162,7 @@ export class SearchManagerImpl implements SearchManager {
       utids: new Float64Array(numRows).fill(-1), // Fill with -1 as utid is unknown
       sources: [],
       trackUris: [],
+      sliceIdSet: new Set(),
       totalResults: numRows,
     };
 
@@ -171,6 +173,7 @@ export class SearchManagerImpl implements SearchManager {
       searchResults.trackUris.push(track.uri);
       // Assuming all results from datasets correspond to 'event' type search
       searchResults.sources.push('event');
+      searchResults.sliceIdSet.add(id);
     }
 
     return searchResults;
