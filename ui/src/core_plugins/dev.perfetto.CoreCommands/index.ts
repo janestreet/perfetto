@@ -20,6 +20,7 @@ import {exists} from '../../base/utils';
 import {JsonSettingsEditor} from '../../components/json_settings_editor';
 import QueryPagePlugin from '../../plugins/dev.perfetto.QueryPage';
 import {AppImpl} from '../../core/app_impl';
+import {Router} from '../../core/router';
 import {commandInvocationSchema, macroSchema} from '../../core/command_manager';
 import {featureFlags} from '../../core/feature_flags';
 import {OmniboxMode} from '../../core/omnibox_manager';
@@ -246,6 +247,7 @@ export default class CoreCommands implements PerfettoPlugin {
       name: 'Open trace file',
       callback: () => {
         input.click();
+        Router.navigate('#!/viewer');
       },
       defaultHotkey: '!Mod+O',
     });
