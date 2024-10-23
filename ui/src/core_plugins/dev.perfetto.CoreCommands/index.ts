@@ -469,7 +469,7 @@ export default class CoreCommands implements PerfettoPlugin {
         const timeZone = formatTimezone(ctx.traceInfo.tzOffMin);
         const result = await ctx.omnibox.prompt('Select format...', {
           values: [
-            {format: TF.Timecode, name: 'Timecode'},
+            {format: TF.Timecode, name: 'Human-readable'},
             {format: TF.UTC, name: 'Realtime (UTC)'},
 
             {format: TF.TraceTz, name: `Realtime (Trace TZ - ${timeZone})`},

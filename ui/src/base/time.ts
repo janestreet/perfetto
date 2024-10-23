@@ -192,6 +192,10 @@ export class Time {
     return Time.toMicros(time).toString() + ' µs';
   }
 
+  static formatNanoseconds(time: time): string {
+    return time.toString() + ' ns';
+  }
+
   static toTimecode(time: time): Timecode {
     return new Timecode(time);
   }
