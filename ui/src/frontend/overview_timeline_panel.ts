@@ -281,8 +281,16 @@ function renderTimestamp(
   switch (fmt) {
     case TimestampFormat.UTC:
     case TimestampFormat.TraceTz:
-    case TimestampFormat.Timecode:
       renderTimecode(ctx, time, x, y, minWidth);
+      break;
+    case TimestampFormat.Timecode:
+      if (time < 1000) {
+        ctx.fillText(Time.formatNanoseconds(time), x, y, minWidth);
+      } else if (time < 1000000) {
+        ctx.fillText(Time.formatMicroseconds(time), x, y, minWidth);
+      } else {
+        ctx.fillText(Time.formatMilliseconds(time), x, y, minWidth);
+      }
       break;
     case TimestampFormat.TraceNs:
       ctx.fillText(time.toString(), x, y, minWidth);
