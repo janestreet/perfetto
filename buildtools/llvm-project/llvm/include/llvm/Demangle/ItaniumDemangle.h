@@ -31,6 +31,7 @@
 #include <cstring>
 #include <limits>
 #include <utility>
+#include <type_traits>
 
 #define FOR_EACH_NODE_KIND(X)                                                  \
   X(NodeArrayNode)                                                             \
