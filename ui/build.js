@@ -224,6 +224,7 @@ Env-var overrides:
     help: 'filter Jest tests by regex, e.g. \'chrome_render\'',
   });
   parser.add_argument('--no-override-gn-args', {action: 'store_true'});
+  parser.add_argument('--lto', {action: 'store_true', help: 'Enable LTO for the Wasm build'});
   parser.add_argument('--typecheck', {
     action: 'store_true',
     help: 'Only type-check (tsc --noEmit), skip bundling',
@@ -279,6 +280,7 @@ Env-var overrides:
   cfg.openPerfettoTrace = !!args.open_perfetto_trace;
   cfg.startHttpServer = args.serve;
   cfg.noOverrideGnArgs = !!args.no_override_gn_args;
+  cfg.lto = !!args.lto;
   if (args.minify_js) {
     cfg.minifyJs = args.minify_js;
   }
@@ -662,7 +664,7 @@ function updateSymlinks() {
 function buildWasm(skipWasmBuild) {
   if (!skipWasmBuild) {
     if (!cfg.noOverrideGnArgs) {
-      let gnVars = `is_debug=${cfg.debug}`;
+      let gnVars = `is_debug=${cfg.debug} is_lto=${cfg.lto}`;
       if (childProcess.spawnSync('which', ['ccache']).status === 0) {
         gnVars += ` cc_wrapper="ccache"`;
       }
