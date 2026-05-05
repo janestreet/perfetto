@@ -461,6 +461,6 @@ interface TrackTitleAttrs {
 
 class TrackTitle implements m.ClassComponent<TrackTitleAttrs> {
   view({attrs}: m.Vnode<TrackTitleAttrs>) {
-    return m('.pf-track__title', attrs.title);
+    return m('.pf-track__title', {title: attrs.title}, attrs.title);
   }
 }
