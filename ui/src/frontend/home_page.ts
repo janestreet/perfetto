@@ -15,12 +15,10 @@
 import './home_page.scss';
 import m from 'mithril';
 import {AppImpl} from '../core/app_impl';
-import {Anchor} from '../widgets/anchor';
 import {HotkeyGlyphs, Keycap} from '../widgets/hotkey_glyphs';
 import {Switch} from '../widgets/switch';
 import {assetSrc} from '../base/assets';
 import {Stack} from '../widgets/stack';
-import {Icons} from '../base/semantic_icons';
 import {Icon} from '../widgets/icon';
 import {Router} from '../core/router';
 import {
@@ -162,16 +160,6 @@ class Hints implements m.ClassComponent {
       // Centered links below the cards
       m(
         '.pf-home-page__links',
-        m(
-          Anchor,
-          {
-            href: 'https://perfetto.dev/docs/visualization/perfetto-ui',
-            icon: Icons.ExternalLink,
-            target: '_blank',
-          },
-          'Getting started',
-        ),
-        m('.pf-home-page__links-separator'),
         m(Switch, {
           label: 'Dark mode',
           checked: isDarkMode,
