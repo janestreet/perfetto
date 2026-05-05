@@ -20,7 +20,6 @@ import {Switch} from '../widgets/switch';
 import {assetSrc} from '../base/assets';
 import {Stack} from '../widgets/stack';
 import {Icon} from '../widgets/icon';
-import {Router} from '../core/router';
 import {
   type KeyboardLayoutMap,
   nativeKeyboardLayoutMap,
@@ -111,16 +110,6 @@ class Hints implements m.ClassComponent {
               },
               m(Icon, {icon: 'folder_open', className: 'pf-left-icon'}),
               m('span.pf-button__label', 'Open trace'),
-            ),
-            m(
-              '.pf-home-page__button',
-              {
-                onclick: () => {
-                  Router.navigate('#!/record');
-                },
-              },
-              m(Icon, {icon: 'fiber_smart_record', className: 'pf-left-icon'}),
-              m('span.pf-button__label', 'Record new trace'),
             ),
           ),
         ),
