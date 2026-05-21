@@ -31,7 +31,7 @@ import {HiringBanner, shouldShowHiringBanner} from './hiring_banner';
 import {ServiceWorkerStatusBadge} from './service_worker_status_badge';
 import {SidebarSection} from './sidebar_section';
 
-const GITILES_URL = 'https://github.com/google/perfetto';
+const GITILES_URL = 'https://github.com/janestreet/perfetto';
 
 export interface SidebarAttrs {
   readonly app: AppImpl;
