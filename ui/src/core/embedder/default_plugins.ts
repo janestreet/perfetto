@@ -34,4 +34,5 @@ export const defaultPlugins = [
   'dev.perfetto.TraceInfoPage',
   'dev.perfetto.TrackEvent',
   'dev.perfetto.TrackUtils',
+  'dev.perfetto.DeeplinkQuerystring',
 ];
