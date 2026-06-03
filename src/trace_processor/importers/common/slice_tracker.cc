@@ -456,10 +456,13 @@ bool SliceTracker::MaybeCloseStack(int64_t new_ts,
     //          [     slice 2     ]
     // This is invalid stacking by the producer and should be fixed. Duration
     // events should either be nested or disjoint, never partially intersecting.
+    //
+    // Note: we intentionally do not drop the slice. For GPU events with
+    // programmatic dependent launch, partially overlapping events are
+    // legitimate, so we keep it.
     if (new_ts < end_ts && new_ts + new_dur > end_ts) {
       context_->storage->IncrementStats(
           stats::slice_drop_overlapping_complete_event);
-      return false;
     }
   }
   return true;
