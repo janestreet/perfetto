@@ -158,7 +158,6 @@ function setupContentSecurityPolicy() {
     'connect-src': [`'self'`, 'blob:', 'data:'].concat(rpcPolicy),
     'img-src': [`'self'`, 'data:', 'blob:'],
     'style-src': [`'self'`, `'unsafe-inline'`],
-    'navigate-to': ['https://*.magic-trace.org', 'self'],
   };
   const meta = document.createElement('meta');
   meta.httpEquiv = 'Content-Security-Policy';
