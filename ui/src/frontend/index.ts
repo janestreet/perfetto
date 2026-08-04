@@ -154,7 +154,7 @@ function setupContentSecurityPolicy() {
       // and should be replaced with 'wasm-unsafe-eval'.
       `'unsafe-eval'`,
     ],
-    'object-src': ['none'],
+    'object-src': [`'none'`],
     'connect-src': [`'self'`, 'blob:', 'data:'].concat(rpcPolicy),
     'img-src': [`'self'`, 'data:', 'blob:'],
     'style-src': [`'self'`, `'unsafe-inline'`],
